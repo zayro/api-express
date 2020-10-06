@@ -1,0 +1,306 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "WEB API",
+    "description": "Descripción del API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "api-imaginamos.herokuapp.com",
+  "basePath": "/api/v1",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/cliente": {
+      "get": {
+        "tags": [
+          "cliente"
+        ],
+        "description": "Obtener Cliente",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna todos los clientes",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/general"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "cliente"
+        ],
+        "description": "Crear nueva nuevo contacto",
+        "parameters": [
+          {
+            "name": "Contacto",
+            "in": "body",
+            "description": "Formato del contacto a crear",
+            "schema": {
+              "$ref": "#/definitions/clienteGuardar"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Nuevo contacto creado",
+            "schema": {
+              "$ref": "#/definitions/general"
+            }
+          }
+        }
+      }
+    },
+    "/cliente/{id}": {
+      "delete": {
+        "summary": "Delete user with given ID",
+        "tags": [
+          "cliente"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id del campo a eliminar",
+            "type": "string"
+          }
+        ],        
+        "responses": {
+          "200": {
+            "description": "User is deleted",
+            "schema": {
+              "$ref": "#/definitions/cliente"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update user with give ID",
+        "tags": [
+          "cliente"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id del campo a eliminar",
+            "type": "string"
+          },
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User with new values of properties",
+            "schema": {
+              "$ref": "#/definitions/clienteActualizar"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Autoridad is updated",
+            "schema": {
+              "$ref": "#/definitions/cliente"
+            }
+          }
+        }
+      }
+    },
+    "/ticket/CrearTicket": {
+      "post": {
+        "tags": [
+          "ticket"
+        ],
+        "description": "Crear nueva nuevo contacto",
+        "parameters": [
+          {
+            "name": "Contacto",
+            "in": "body",
+            "description": "Formato del contacto a crear",
+            "schema": {
+              "$ref": "#/definitions/ticketCrear"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Nuevo contacto creado",
+            "schema": {
+              "$ref": "#/definitions/general"
+            }
+          }
+        }
+      }
+    },    
+    "/tecnico": {
+      "get": {
+        "tags": [
+          "tecnico"
+        ],
+        "responses": {
+          "200": {
+            "description": "row is found",
+            "schema": {
+              "$ref": "#/definitions/general"
+            }
+          }
+        }
+      }
+    },
+    "/tecnico/ticket/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Id del tecnico que se desea buscar",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": [
+          "tecnico"
+        ],
+        "summary": "Get user with given ID",
+        "responses": {
+          "200": {
+            "description": "row is found",
+            "schema": {
+              "$ref": "#/definitions/general"
+            }
+          }
+        }
+      }
+    },
+    "/calificacion/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Id del tecnico que se desea buscar",
+          "type": "string"
+        },
+        {
+          "name": "calificacion",
+          "in": "body",
+          "description": "calificacion with new values of properties",
+          "schema": {
+            "$ref": "#/definitions/calificacioneActualizar"
+          }
+        }
+      ],
+      "put": {
+        "tags": [
+          "calificacion servicio"
+        ],
+        "summary": "Get user with given ID",
+        "responses": {
+          "200": {
+            "description": "row is found",
+            "schema": {
+              "$ref": "#/definitions/general"
+            }
+          }
+        }
+      }
+    }    
+
+  },
+  "definitions": {
+    "general": {
+      "properties": {
+        "response": {
+          "type": "object",
+          "properties": {
+            "success": {
+              "type": "boolean"
+            },
+            "message": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "clienteGuardar": {
+      "properties": {
+        "nombre": {
+          "type": "string"
+        },
+        "identificacion": {
+          "type": "string"
+        }
+      }
+    },
+    "clienteActualizar": {
+      "properties": {
+        "nombre": {
+          "type": "string"
+        }        
+      }
+    },
+    "calificacioneActualizar": {
+      "properties": {
+        "calificacion": {
+          "type": "number"
+        }        
+      }
+    },    
+    "ticketCrear": {
+      "properties": {
+        "identificacion_cliente": {
+          "type": "string"
+        },
+        "descripcion": {
+          "type": "string"
+        }
+      }
+    },        
+    "cliente": {
+      "properties": {
+        "response": {
+          "type": "object",
+          "properties": {
+            "success": {
+              "type": "boolean"
+            },
+            "message": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    }    
+  }
+}
+

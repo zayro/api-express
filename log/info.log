@@ -1,0 +1,12 @@
+[2020-10-01T15:06:32.878] [INFO] debugInfo - Cheese is Comté.
+[2020-10-01T15:06:32.879] [WARN] debugInfo - Cheese is quite smelly.
+[2020-10-01T15:06:32.879] [ERROR] debugInfo - Cheese is too ripe!
+[2020-10-01T15:06:32.879] [FATAL] debugInfo - Cheese was breeding ground for listeria.
+[2020-10-01T15:07:05.099] [INFO] debugInfo - Cheese is Comté.
+[2020-10-01T15:07:05.101] [WARN] debugInfo - Cheese is quite smelly.
+[2020-10-01T15:07:05.101] [ERROR] debugInfo - Cheese is too ripe!
+[2020-10-01T15:07:05.101] [FATAL] debugInfo - Cheese was breeding ground for listeria.
+[2020-10-01T15:07:13.933] [INFO] debugInfo - Cheese is Comté.
+[2020-10-01T15:07:13.934] [WARN] debugInfo - Cheese is quite smelly.
+[2020-10-01T15:07:13.934] [ERROR] debugInfo - Cheese is too ripe!
+[2020-10-01T15:07:13.934] [FATAL] debugInfo - Cheese was breeding ground for listeria.
