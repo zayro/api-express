@@ -25,6 +25,13 @@ log4js.configure({
 logger = log4js.getLogger();
 
 
+
+// =================================================================
+// Config mongoose ====================================================
+// =================================================================
+
+const {db} = require('./mongoDB/');
+
 // =================================================================
 // Config Expres  ==================================================
 // ================================================================= 
@@ -82,6 +89,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // RUTA API
 app.use('/api/v1', api)
+
+const apiMongo = require('./mongoDB/controller/user')
+app.use('/api/mongo', apiMongo)
 
 
 // Route Not Found
