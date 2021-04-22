@@ -1,14 +1,49 @@
-const cliente = require('../model/cliente');
 const general = require('../model/general');
 
-const {
+import {
+    getFiles,
+    getAllFilesObject,
     message
-} = require('../utils/tools');
+} from '../utils/tools';
 
 
-async function getAll(req, res) {
 
-    await cliente.select().then(reponse => {
+function getFolder(req, res) {
+
+    try {
+        const response = getFiles("src/uploads");
+        console.log(`:rocket: ~ file: general.js ~ line 14 ~ getFolder ~ response`, response);
+        return res.status(200).json(message(true, 'respuesta exitosa', response));
+
+    } catch (error) {
+        console.log(`:rocket: ~ file: general.js ~ line 14 ~ getFolder ~ response`, error);
+        return res.status(500).json(message(false, 'no se encontraron files getAll', error));
+
+    }
+
+}
+
+function getFolderAll(req, res) {
+
+    try {
+        const response = getAllFilesObject("src/uploads");
+        console.log(`:rocket: ~ file: general.js ~ line 14 ~ getFolder ~ response`, response);
+        return res.status(200).json(message(true, 'respuesta exitosa', response));
+
+    } catch (error) {
+        console.log(`:rocket: ~ file: general.js ~ line 14 ~ getFolder ~ response`, error);
+
+        return res.status(500).json(message(false, 'no se encontraron files getAll', error));
+
+    }
+
+}
+
+function getAll(req, res) {
+
+    const table = req.params.table
+
+    general.select(table).then(reponse => {
         return res.status(200).json(message(true, 'respuesta exitosa', reponse));
     }).catch(error => {
         return res.status(500).send(message(false, 'no se encontraron registros getAll', error));
@@ -22,6 +57,9 @@ function getOne(req, res) {
 
     cliente.search(id).then(reponse => {
         if (reponse) {
+            console.log(`:rocket: ~ file: general.js ~ line 41 ~ getFolder ~ error`, error);
+            console.log(`:rocket: ~ file: general.js ~ line 41 ~ getFolder ~ error`, error);
+            console.log(`:rocket: ~ file: general.js ~ line 41 ~ getFolder ~ error`, error);
             return res.status(200).send(message(
                 true,
                 'respuesta exitosa',
@@ -100,8 +138,7 @@ async function destroy(req, res) {
 
 module.exports = {
     getAll,
-    getOne,
-    save,
-    update,
-    destroy
+    getFolder,
+    getFolderAll
+
 }

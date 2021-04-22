@@ -1,6 +1,12 @@
 const knex = require('knex');
 const config = require('../config/config')
 
-const connection = knex(config.db);
+const connection_defalt = knex(config.db_mysql);
+const connection = (connect) => {
+    return knex(connect);
+}
 
-module.exports = connection;
+export {
+    connection_defalt,
+    connection
+};

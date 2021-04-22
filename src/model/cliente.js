@@ -1,22 +1,36 @@
  // the connection!
- const knex = require('../db')
+ import {
+     connection
+ } from '../db/index.js';
+
+ const knex = connection({
+     client: 'mysql',
+     connection: {
+         host: '127.0.0.1',
+         port: '3306',
+         user: 'root',
+         password: 'zayro',
+         database: 'auth'
+     },
+     debug: false
+ });
 
  module.exports = {
      async select() {
          //return knex('sticker');
-         return await knex.select('*').from('cliente');
+         return await knex.select('*').from('users');
      },
      async search(id) {
-         //return knex('cliente').where('id_cliente', id).first();
-         return await knex.select('*').from('cliente').where('id_cliente', id).first();
+         //return knex('users').where('id_users', id).first();
+         return await knex.select('*').from('users').where('id_users', id).first();
      },
      insert(data) {
-         return knex('cliente').insert(data, '*');
+         return knex('users').insert(data, '*');
      },
      update(id, data) {
-         return knex('cliente').where('id_cliente', id).update(data, '*');
+         return knex('users').where('id_users', id).update(data, '*');
      },
      delete(id) {
-         return knex('cliente').where('id_cliente', id).del();
+         return knex('users').where('id_users', id).del();
      }
  }

@@ -61,7 +61,10 @@ app.use((req, res, next) => {
 // Routes Expres  ==================================================
 // ================================================================= 
 
-const api = require('./routes')
+import {
+    api,
+    general
+} from './routes'
 
 var swaggerUi = require('swagger-ui-express'),
     swaggerDocument = require('../doc/swagger.json');
@@ -85,6 +88,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // RUTA API
 app.use('/api/v1', api)
+app.use('/api/v1', general)
 
 /*
 const apiMongo = require('./mongoDB/controller/user')
@@ -101,7 +105,12 @@ app.use(function (req, res) {
 
 // Handle 500
 app.use(function (error, req, res, next) {
-    res.send('500: Internal Server Error', 500);
+
+    res.status(500).json({
+        "500": "Internal Server Error",
+        "error": error
+    });
+
 });
 
 // Route Handle Errors

@@ -2,9 +2,19 @@
 
 
 module.exports = {
-    db: {
+    db_pg: {
         client: 'pg',
         connection: process.env.DATABASE_URL || 'postgres://postgres:zayro8905@localhost:5432/imaginamos',
+    },
+    db_mysql: {
+        client: 'mysql',
+        connection: {
+            host: '127.0.0.1',
+            port: '3306',
+            user: 'root',
+            password: 'zayro',
+            database: 'auth'
+        },
     },
     port: process.env.PORT || 3000,
     dblocal: 'postgres://postgres:zayro8905@localhost:5432/imaginamos',
