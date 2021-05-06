@@ -1,22 +1,13 @@
  // the connection!
  //const knex = require('../db')
+
  import {
      connection
  } from '../db/index.js';
 
- const knex = connection({
-     client: 'mysql',
-     connection: {
-         host: '127.0.0.1',
-         port: '3306',
-         user: 'root',
-         password: 'zayro',
-         database: 'auth'
-     },
-     debug: true
- });
+ const knex = connection();
 
- module.exports = {
+ export default {
      async max(table, id) {
          let data = await knex(table).max(id);
          return data[0].max + 1;
@@ -50,6 +41,12 @@
 
      async delete(table, condition) {
          return knex(table).where(condition).del();
-     }
+     },
+
+     async raw(sql, param) {
+         return await knex.raw(sql, param);
+     },
+
+
 
  }

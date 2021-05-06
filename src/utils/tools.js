@@ -1,9 +1,5 @@
- import {
-     bcrypt
- } from "bcrypt";
- import {
-     jwt
- } from "jsonwebtoken";
+ import bcrypt from "bcrypt";
+ import jwt from "jsonwebtoken";
 
  //requiring path and fs modules
  const path = require("path");
@@ -34,16 +30,16 @@
      return data;
  };
 
- const token = (data, expiresIn) => {
+ const CreateToken = (data, time) => {
      const secret = `${process.env.TOKENSECRET}`;
 
      try {
-         if (expiresIn) {
-             return jwt.sign({
-                     data,
-                 },
+         if (time !== '' || typeof time !== 'undefined') {
+             return jwt.sign(data,
+
                  secret, {
-                     expiresIn,
+                     algorithm: 'HS256',
+                     expiresIn: time
                  }
              );
          }
@@ -68,13 +64,25 @@
      }
  };
 
+ const parseDataKnex = (data) => {
+
+     const info = JSON.parse(JSON.stringify(data));
+     if (info.isArray || typeof info === 'object') {
+         return info[0]
+     } else {
+         console.log("*** parseDataKnex ****", typeof info);
+         return false
+     };
+
+ }
 
  export {
-     token,
+     CreateToken,
      checkToken,
      message,
      encrypt,
      compareEncryptedData,
+     parseDataKnex
  };
 
  export {

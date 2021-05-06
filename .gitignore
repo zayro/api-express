@@ -6,6 +6,9 @@ log/**
 log/*.log
 node_modules/
 .idea
+.env
 
 # Folder Src
 uploads
+
+

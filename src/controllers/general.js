@@ -1,4 +1,9 @@
-const general = require('../model/general');
+import general from '../model/general';
+import {
+    check,
+    body,
+    validationResult
+} from 'express-validator';
 
 import {
     getFiles,
@@ -51,19 +56,27 @@ function getAll(req, res) {
 
 }
 
-function getOne(req, res) {
+function search(req, res) {
 
-    const id = req.params.id
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            errors: errors.array()
+        })
+    }
 
-    cliente.search(id).then(reponse => {
+    const from = req.body.from
+    const fields = req.body.fields
+    const where = req.body.where || {}
+
+
+    general.search(fields, from, where).then(reponse => {
         if (reponse) {
-            console.log(`:rocket: ~ file: general.js ~ line 41 ~ getFolder ~ error`, error);
-            console.log(`:rocket: ~ file: general.js ~ line 41 ~ getFolder ~ error`, error);
-            console.log(`:rocket: ~ file: general.js ~ line 41 ~ getFolder ~ error`, error);
+
             return res.status(200).send(message(
                 true,
                 'respuesta exitosa',
-                reponse
+                reponse,
             ));
         } else {
             return res.status(200).send(message(false, 'no se encontraron registros'));
@@ -84,7 +97,7 @@ async function save(req, res) {
 
     console.log('save cliente', data);
 
-    cliente.insert(data).then(reponse => {
+    general.insert(data).then(reponse => {
         if (reponse) {
             return res.status(201).send(message(true, 'respuesta exitosa', reponse));
         } else {
@@ -138,6 +151,7 @@ async function destroy(req, res) {
 
 module.exports = {
     getAll,
+    search,
     getFolder,
     getFolderAll
 

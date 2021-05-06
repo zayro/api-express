@@ -42,3 +42,8 @@ export {
     general
 }
 from './general';
+
+export {
+    auth
+}
+from './auth';

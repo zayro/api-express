@@ -9,18 +9,16 @@ import cors from 'cors';
 import path from 'path';
 import methodOverride from 'method-override';
 import helmet from 'helmet';
-import multer from 'multer';
+
 
 //const bodyParser = require('body-parser');
 //const methodOverride = require('method-override');
 
 
-const upload = multer({
-    dest: 'src/uploads/'
-})
+
 
 const app = express();
-const fileUpload = require('express-fileupload')
+
 
 // Helmet helps you secure your Express apps by setting various HTTP headers.
 app.use(helmet());
@@ -31,7 +29,8 @@ app.use(express.urlencoded({
     extended: true
 }))
 
-app.use(fileUpload());
+app.use(morgan('tiny'));
+
 
 // parse application/json
 app.use(express.json());
@@ -63,7 +62,8 @@ app.use((req, res, next) => {
 
 import {
     api,
-    general
+    general,
+    auth
 } from './routes'
 
 var swaggerUi = require('swagger-ui-express'),
@@ -89,6 +89,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // RUTA API
 app.use('/api/v1', api)
 app.use('/api/v1', general)
+app.use('/api/v1', auth)
 
 /*
 const apiMongo = require('./mongoDB/controller/user')
@@ -104,6 +105,7 @@ app.use(function (req, res) {
 });
 
 // Handle 500
+/*
 app.use(function (error, req, res, next) {
 
     res.status(500).json({
@@ -112,6 +114,7 @@ app.use(function (error, req, res, next) {
     });
 
 });
+*/
 
 // Route Handle Errors
 app.use((error, req, res, next) => {
