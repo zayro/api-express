@@ -114,3 +114,11 @@ kubernetes).
 
 git rm env --cached
 git rm env.local --cached
+
+## Funcionalidad
+
+1. Autenticacion con Token - Express-Jwt
+2. Autorizacion con Token - Express-Permission
+3. Upload Files - Murder
+4. Sql Orm - Knex
+5.
