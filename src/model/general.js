@@ -47,6 +47,4 @@
          return await knex.raw(sql, param);
      },
 
-
-
  }

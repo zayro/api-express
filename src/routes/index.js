@@ -1,49 +1,29 @@
-import
-express
-from 'express';
+import express from "express";
 
 const api = express();
 
-const users = require('../controllers/cliente');
+const users = require("../controllers/cliente");
 
+const { checkAuth } = require("../middleware");
 
-const {
-    checkAuth
-} = require('../middleware');
+api.get("/users", users.getAll);
+api.get("/users/:id", users.getOne);
+api.post("/users", users.save);
+api.put("/users/:id", users.update);
+api.delete("/users/:id", users.destroy);
 
-
-/** 
- * Metodos de consulta 
+/**
+ * Routes of Api
  */
-api.get('/', (req, res) => {
 
-    return res.status(200).send({
-        message: "Welcome to Api "
-    });
+export { api };
 
-});
+export { general } from "./general";
 
+export { auth } from "./auth";
 
+export { query } from "./query";
 
+export { files } from "./files";
 
-api.get('/users', users.getAll);
-api.get('/users/:id', users.getOne);
-api.post('/users', users.save);
-api.put('/users/:id', users.update);
-api.delete('/users/:id', users.destroy);
-
-
-
-export {
-    api
-};
-
-export {
-    general
-}
-from './general';
-
-export {
-    auth
-}
-from './auth';
+export { uploads } from "../controllers/upload";

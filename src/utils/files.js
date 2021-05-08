@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 
 
-const getFiles = (folder) => {
+const getFiles = (folder, domain = "localhost") => {
     //joining path of directory
     //const directoryPath = path.join(__dirname, folder);
     //passsing directoryPath and callback function
@@ -17,9 +17,14 @@ const getFiles = (folder) => {
         // Do whatever you want to do with the file
         if (fs.statSync(folder + "/" + file).isDirectory()) {
             //arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles)
+
+
         } else {
+            //const url = "http://${domain}/" + folder + "/" + file;
+            const url = `http://${domain}/${folder}/${file}`;
             arraytFiles.push({
-                'filename': file
+                'filename': file,
+                'url': url
             })
         }
     });
