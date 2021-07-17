@@ -1,41 +1,37 @@
-import express from "express";
+import express from "express"
 
-import jwt from "express-jwt";
+import jwt from "express-jwt"
 
-import permission from "express-jwt-permissions";
+import permission from "express-jwt-permissions"
 
-import * as generalControlller from "../controllers/general";
+import * as generalControlller from "../controllers/general"
 
-import { check, body, validationResult } from "express-validator";
+import { check, body, validationResult } from "express-validator"
 
 // valiables de entorno
-import dotenv from "dotenv";
+import dotenv from "dotenv"
 
-dotenv.config();
+dotenv.config()
 
-const api = express();
+const api = express()
 
-const guard = permission();
+const guard = permission()
 
 const secret = {
-    secret: process.env.TOKENSECRET,
-    algorithms: ["HS256"],
-};
+  secret: process.env.TOKENSECRET,
+  algorithms: ["HS256"],
+}
 
 //api.use(jwt(secret));
 
-api.get(
-    "/general/select/:table",
-    guard.check(["admin"]),
-    generalControlller.getAll
-);
+api.get("/general/select/:table", generalControlller.getAll)
 
 api.post(
-    "/general/search",
-    check("from").notEmpty(),
-    check("fields").notEmpty(),
-    guard.check(["admin"]),
-    generalControlller.search
-);
+  "/general/search",
+  check("from").notEmpty(),
+  check("fields").notEmpty(),
+  guard.check(["admin"]),
+  generalControlller.search
+)
 
-export { api as general };
+export { api as general }

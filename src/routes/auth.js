@@ -1,13 +1,9 @@
-import
-express
-from 'express';
+import express from "express"
 
 const api = express()
 
-const authController = require('../controllers/auth');
+const authController = require("../controllers/auth")
 
-api.post('/login', authController.login);
+api.post("/login", authController.login)
 
-export {
-    api as auth
-};
+export { api as default }

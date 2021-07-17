@@ -1,123 +1,103 @@
 //requiring path and fs modules
-const path = require("path");
-const fs = require("fs");
-
+const path = require("path")
+const fs = require("fs")
 
 const getFiles = (folder, domain = "localhost") => {
-    //joining path of directory
-    //const directoryPath = path.join(__dirname, folder);
-    //passsing directoryPath and callback function
+  //joining path of directory
+  //const directoryPath = path.join(__dirname, folder);
+  //passsing directoryPath and callback function
 
-    const arraytFiles = []
+  const arraytFiles = []
 
-    const files = fs.readdirSync(folder);
+  const files = fs.readdirSync(folder)
 
-    //listing all files using forEach
-    files.forEach((file) => {
-        // Do whatever you want to do with the file
-        if (fs.statSync(folder + "/" + file).isDirectory()) {
-            //arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles)
+  //listing all files using forEach
+  files.forEach((file) => {
+    // Do whatever you want to do with the file
+    if (fs.statSync(folder + "/" + file).isDirectory()) {
+      //arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles)
+    } else {
+      //const url = "http://${domain}/" + folder + "/" + file;
+      const url = `http://${domain}/${folder}/${file}`
+      arraytFiles.push({
+        filename: file,
+        url: url,
+      })
+    }
+  })
 
-
-        } else {
-            //const url = "http://${domain}/" + folder + "/" + file;
-            const url = `http://${domain}/${folder}/${file}`;
-            arraytFiles.push({
-                'filename': file,
-                'url': url
-            })
-        }
-    });
-
-    return arraytFiles;
-};
+  return arraytFiles
+}
 
 const getAllFiles = function (dirPath, arrayOfFiles) {
-    files = fs.readdirSync(dirPath)
+  files = fs.readdirSync(dirPath)
 
-    arrayOfFiles = arrayOfFiles || []
+  arrayOfFiles = arrayOfFiles || []
 
+  files.forEach(function (file) {
+    if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+      arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles)
+    } else {
+      //arrayOfFiles.push(path.join(__dirname, dirPath, "/", file))
+      arrayOfFiles.push(file)
+    }
+  })
 
-
-    files.forEach(function (file) {
-        if (fs.statSync(dirPath + "/" + file).isDirectory()) {
-            arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles)
-        } else {
-            //arrayOfFiles.push(path.join(__dirname, dirPath, "/", file))
-            arrayOfFiles.push(file)
-        }
-    })
-
-    return arrayOfFiles
+  return arrayOfFiles
 }
 
 const getAllFilesObject = (dirPath, arrayData) => {
+  let files = fs.readdirSync(dirPath)
 
-    let files = fs.readdirSync(dirPath)
+  let arrayOfFiles = {}
+  arrayOfFiles[dirPath] = []
 
-    let arrayOfFiles = {};
-    arrayOfFiles[dirPath] = [];
+  files.forEach((file) => {
+    if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+      let folder = `${file}`
+      //arrayOfFiles[folder] = getFiles(dirPath + "/" + file);
+      arrayOfFiles[folder] = getAllFilesObject(dirPath + "/" + file, arrayOfFiles)
+    } else {
+      //arrayOfFiles.push(path.join(__dirname, dirPath, "/", file))
+      arrayOfFiles[dirPath].push({
+        //'dirPath': dirPath,
+        filename: file,
+      })
+    }
+  })
 
-    files.forEach((file) => {
-
-        if (fs.statSync(dirPath + "/" + file).isDirectory()) {
-            let folder = `${file}`;
-            //arrayOfFiles[folder] = getFiles(dirPath + "/" + file);
-            arrayOfFiles[folder] = getAllFilesObject(dirPath + "/" + file, arrayOfFiles);
-        } else {
-            //arrayOfFiles.push(path.join(__dirname, dirPath, "/", file))
-            arrayOfFiles[dirPath].push({
-                //'dirPath': dirPath,
-                'filename': file
-            })
-        }
-    })
-
-    return arrayOfFiles
+  return arrayOfFiles
 }
 
 const getAllFilesObjectPromise = (dirPath, arrayOfFiles) => {
+  return new Promise((resolve, reject) => {
+    try {
+      files = fs.readdirSync(dirPath, {
+        withFileTypes: false,
+      })
 
-    return new Promise((resolve, reject) => {
+      arrayOfFiles = arrayOfFiles || {}
+      arrayOfFiles[dirPath] = []
 
-        try {
-
-            files = fs.readdirSync(dirPath, {
-                withFileTypes: false
-            })
-
-            arrayOfFiles = arrayOfFiles || {};
-            arrayOfFiles[dirPath] = [];
-
-            files.forEach((file) => {
-
-                if (fs.statSync(dirPath + "/" + file).isDirectory()) {
-                    folder = `${file}`;
-                    //arrayOfFiles[folder] = getFiles(dirPath + "/" + file);
-                    arrayOfFiles[folder] = getAllFilesObject(dirPath + "/" + file, arrayOfFiles);
-                } else {
-                    //arrayOfFiles.push(path.join(__dirname, dirPath, "/", file))
-                    arrayOfFiles[dirPath].push({
-                        //'dirPath': dirPath,
-                        'filename': file
-                    })
-                }
-            })
-            resolve('sd')
-            return arrayOfFiles;
-
-        } catch (error) {
-
-            reject(error);
-
+      files.forEach((file) => {
+        if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+          folder = `${file}`
+          //arrayOfFiles[folder] = getFiles(dirPath + "/" + file);
+          arrayOfFiles[folder] = getAllFilesObject(dirPath + "/" + file, arrayOfFiles)
+        } else {
+          //arrayOfFiles.push(path.join(__dirname, dirPath, "/", file))
+          arrayOfFiles[dirPath].push({
+            //'dirPath': dirPath,
+            filename: file,
+          })
         }
-
-    });
+      })
+      resolve("sd")
+      return arrayOfFiles
+    } catch (error) {
+      reject(error)
+    }
+  })
 }
 
-export {
-    getFiles,
-    getAllFiles,
-    getAllFilesObject,
-    getAllFilesObjectPromise
-}
+export { getFiles, getAllFiles, getAllFilesObject, getAllFilesObjectPromise }

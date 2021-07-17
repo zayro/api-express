@@ -1,13 +1,9 @@
-import
-express
-from 'express';
+import express from "express"
 
 const api = express()
 
-const generalControlller = require('../controllers/general');
+const generalControlller = require("../controllers/general")
 
-api.get('/general/folder', generalControlller.getFolder);
+api.get("/general/folder", generalControlller.getFolder)
 
-export {
-    api as general
-};
+export { api as cache }

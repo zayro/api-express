@@ -1,26 +1,27 @@
-import express from 'express';
-import * as fileControlller from '../controllers/files'
+import express from "express"
 
 // valiables de entorno
 import dotenv from "dotenv"
 
-import cacheRedis from 'express-redis-cache';
+import cacheRedis from "express-redis-cache"
 
-const cache = cacheRedis();
+import * as fileControlller from "../controllers/files"
 
-dotenv.config();
+const cache = cacheRedis()
+
+dotenv.config()
 
 const api = express()
 
-api.get('/general/folder/cache', cache.route({
-    type: 'json',
-    expire: 60
-}), fileControlller.getFolder);
+api.get(
+  "/general/folder/cache",
+  cache.route({
+    type: "json",
+    expire: 60,
+  }),
+  fileControlller.getFolder
+)
 
+api.get("/general/folder", fileControlller.getFolder)
 
-api.get('/general/folder', fileControlller.getFolder);
-
-
-export {
-    api as files
-};
+export { api as default }

@@ -2,6 +2,7 @@
 log/**
 .log*
 *.log
+
 # Folder
 log/*.log
 node_modules/
@@ -11,4 +12,6 @@ node_modules/
 # Folder Src
 uploads
 
-
+#Nyc
+.nyc_output
+coverage/
