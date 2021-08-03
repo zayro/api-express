@@ -59,6 +59,13 @@ async function save(req, res) {
 }
 
 async function saveAutoIncrement(req, res) {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(403).json({
+      errors: errors.array(),
+    })
+  }
+
   connect
     .insert(req.body.insert, req.body.values, req.body.increment)
     .then((reponse) => {
@@ -71,33 +78,38 @@ async function saveAutoIncrement(req, res) {
 }
 
 async function update(req, res) {
-  const id = req.params.id
-
-  const data = {
-    nombre: req.body.nombre,
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(403).json({
+      errors: errors.array(),
+    })
   }
 
-  console.log("update cliente", data)
-
-  cliente
-    .update(id, data)
+  connect
+    .update(req.body.update, req.body.where, req.body.set)
     .then((reponse) => {
+      console.log(`:rocket: ~ file: general.js ~ line 91 ~ .then ~ reponse`, reponse)
       if (reponse) {
         return res.status(200).send(message(true, "proceso exitoso", reponse))
       } else {
-        return res.status(200).send(message(false, "no se encontraron registros"))
+        return res.status(200).send(message(false, "no se encontraron registros", response))
       }
     })
     .catch((error) => {
-      return res.status(200).send(message(false, error))
+      return res.status(403).send(message(false, error))
     })
 }
 
 async function destroy(req, res) {
-  const id = req.params.id
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(403).json({
+      errors: errors.array(),
+    })
+  }
 
-  cliente
-    .delete(id)
+  connect
+    .delete(req.body.delete, req.body.condition)
     .then((reponse) => {
       if (reponse) {
         return res.status(200).send(message(true, "proceso exitoso", reponse))

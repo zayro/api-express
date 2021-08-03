@@ -36,10 +36,34 @@ api.post(
 
 api.post(
   "/general/insert",
-  [check("insert").exists(), check("values").exists()],
+  [check("insert").exists(), check("values").notEmpty()],
   jwt(secret),
   guard.check(["admin"]),
   generalControlller.save
+)
+
+api.post(
+  "/general/insertIncrement",
+  [check("insert").exists(), check("values").notEmpty()],
+  jwt(secret),
+  guard.check(["admin"]),
+  generalControlller.saveAutoIncrement
+)
+
+api.put(
+  "/general/update",
+  [check("update").exists(), check("set").notEmpty()],
+  jwt(secret),
+  guard.check(["admin"]),
+  generalControlller.update
+)
+
+api.delete(
+  "/general/delete",
+  check("condition").not().isEmpty(),
+  jwt(secret),
+  guard.check(["admin"]),
+  generalControlller.destroy
 )
 
 export { api as general }

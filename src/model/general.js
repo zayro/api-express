@@ -38,7 +38,7 @@ class conectar {
   }
 
   async update(table, condition, data) {
-    return this.knex(table).where(condition).update(data)
+    return await this.knex(table).where(condition).update(data)
   }
 
   async delete(table, condition) {
