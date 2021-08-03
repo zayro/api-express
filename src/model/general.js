@@ -1,47 +1,53 @@
 // the connection!
-// const knex = require('../db')
+// const this.knex = require('../db')
 
-import {connection} from "../db/index.js";
+import { connection } from "../db/index.js"
 
-const knex = connection();
+//const knex = connection("demo")
 
-export default {
+class conectar {
+  constructor(db) {
+    this.knex = connection(db)
+  }
+
   async max(table, id) {
-    let data = await knex(table).max(id);
-    return data[0].max + 1;
-  },
+    let data = await this.knex(table).max(id)
+    return data[0].max + 1
+  }
 
   async select(table) {
-    //return knex('sticker');
-    return await knex.select("*").from(table);
-  },
+    //return this.knex('sticker');
+    return await this.knex.select("*").from(table)
+  }
 
-  async search(field, table, condition) {
-    //return knex('users').where('id_users', id).first();
-    return await knex.select(field).from(table).where(condition);
-  },
+  async search(field, table, condition = {}) {
+    //return this.knex('users').where('id_users', id).first();
+    return await this.knex.select(field).from(table).where(condition)
+  }
 
   async insert(table, data) {
-    return knex(table).insert(data);
-  },
+    return this.knex(table).insert(data)
+  }
 
   async insert_increment(table, data, increment) {
-    let id = await knex(table).max(increment);
-    id = id[0].max + 1;
-    data[increment] = id;
+    let id = await this.knex(table).max(increment)
+    id = id[0].max + 1
+    data[increment] = id
 
-    return knex(table).insert(data);
-  },
+    return this.knex(table).insert(data)
+  }
 
   async update(table, condition, data) {
-    return knex(table).where(condition).update(data);
-  },
+    return this.knex(table).where(condition).update(data)
+  }
 
   async delete(table, condition) {
-    return knex(table).where(condition).del();
-  },
+    return this.knex(table).where(condition).del()
+  }
 
   async raw(sql, param) {
-    return await knex.raw(sql, param);
-  },
-};
+    return await this.knex.raw(sql, param)
+  }
+}
+
+export default conectar

@@ -1,12 +1,15 @@
 import { validationResult } from "express-validator"
-import general from "../model/general"
 
 import { message } from "../utils/tools"
+
+import general from "../model/general"
+
+const connect = new general("demo")
 
 function getAll(req, res) {
   const { table } = req.params
 
-  general
+  connect
     .select(table)
     .then((reponse) => res.status(200).json(message(true, "respuesta exitosa", reponse)))
     .catch((error) => res.status(500).send(message(false, "no se encontraron registros getAll", error)))
@@ -15,36 +18,49 @@ function getAll(req, res) {
 function search(req, res) {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
-    return res.status(422).json({
+    return res.status(403).json({
       errors: errors.array(),
     })
   }
 
-  const { from } = req.body
-  const { fields } = req.body
+  const { from, fields } = req.body
+
   const where = req.body.where || {}
 
-  return general.search(fields, from, where).then((reponse) => {
-    if (reponse) {
-      return res.status(200).send(message(true, "respuesta exitosa", reponse))
-    }
-    return res.status(200).send(message(false, "no se encontraron registros"))
-  })
+  return connect
+    .search(fields, from, where)
+    .then((reponse) => {
+      if (reponse) {
+        return res.status(200).send(message(true, "respuesta exitosa", reponse))
+      }
+      return res.status(200).send(message(false, "no se encontraron registros"))
+    })
+    .catch((error) => res.status(500).send(message(false, "ocurrio un error", error)))
 }
 
 async function save(req, res) {
-  const id_cliente = await general.max("cliente", "id_cliente")
-
-  const data = {
-    id_cliente,
-    nombre: req.body.nombre,
-    identificacion: req.body.identificacion,
+  //const id_cliente = await connect.max("cliente", "id_cliente")
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(403).json({
+      errors: errors.array(),
+    })
   }
 
-  console.log("save cliente", data)
+  connect
+    .insert(req.body.insert, req.body.values)
+    .then((reponse) => {
+      if (reponse) {
+        return res.status(201).send(message(true, "respuesta exitosa", reponse))
+      }
+      return res.status(500).send(message(false, "no se encontraron registros"))
+    })
+    .catch((error) => res.status(500).send(message(false, error)))
+}
 
-  general
-    .insert(data)
+async function saveAutoIncrement(req, res) {
+  connect
+    .insert(req.body.insert, req.body.values, req.body.increment)
     .then((reponse) => {
       if (reponse) {
         return res.status(201).send(message(true, "respuesta exitosa", reponse))
@@ -94,4 +110,4 @@ async function destroy(req, res) {
     })
 }
 
-export { getAll, search, save, update, destroy }
+export { getAll, search, save, saveAutoIncrement, update, destroy }

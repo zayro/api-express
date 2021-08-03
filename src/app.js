@@ -4,7 +4,6 @@
 
 import express from "express"
 import morgan from "morgan"
-import cors from "cors"
 import path from "path"
 import methodOverride from "method-override"
 import helmet from "helmet"
@@ -61,8 +60,8 @@ app.use((req, res, next) => {
 // set the view engine to ejs
 
 app.set("view engine", "ejs")
-console.log(__dirname)
-console.log(process.cwd())
+console.log("__dirname", __dirname)
+console.log("process.cwd()", process.cwd())
 app.set("views", path.join(__dirname, "/views"))
 
 app.get("/report", function (req, res) {
@@ -96,7 +95,6 @@ app.get("/report", function (req, res) {
 
 // Define the static file path
 // app.use(express.static('public'));
-console.log(__dirname)
 app.use("/public", express.static("public"))
 
 // =================================================================

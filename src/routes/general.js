@@ -6,10 +6,9 @@ import permission from "express-jwt-permissions"
 
 import * as generalControlller from "../controllers/general"
 
-import { check, body, validationResult } from "express-validator"
+import { check, oneOf, body, validationResult } from "express-validator"
 
-// valiables de entorno
-import dotenv from "dotenv"
+const dotenv = require("dotenv")
 
 dotenv.config()
 
@@ -18,11 +17,12 @@ const api = express()
 const guard = permission()
 
 const secret = {
-  secret: process.env.TOKENSECRET,
+  secret: `${process.env.TOKENSECRET}`,
   algorithms: ["HS256"],
 }
 
-//api.use(jwt(secret));
+// security Extreme
+//api.use(jwt(secret))
 
 api.get("/general/select/:table", generalControlller.getAll)
 
@@ -32,6 +32,14 @@ api.post(
   check("fields").notEmpty(),
   guard.check(["admin"]),
   generalControlller.search
+)
+
+api.post(
+  "/general/insert",
+  [check("insert").exists(), check("values").exists()],
+  jwt(secret),
+  guard.check(["admin"]),
+  generalControlller.save
 )
 
 export { api as general }

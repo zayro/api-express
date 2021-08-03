@@ -23,7 +23,8 @@
         "start:dev": "nodemon index.js --exec babel-node",
         "watch": "babel src -d app --source-maps --watch",
         "build": "babel serve -s -d dist/",
-        "production": "npm run build && node dist/"
+        "production": "npm run build && node dist/",
+        "pm2": "pm2 start npm --name my-app -- start"
     },
     "license": "ISC",
     "dependencies": {

@@ -1,94 +1,70 @@
- import bcrypt from "bcrypt";
- import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 
- //requiring path and fs modules
- const path = require("path");
- const fs = require("fs");
+//requiring path and fs modules
+const path = require("path")
+const fs = require("fs")
 
+// valiables de entorno
+const dotenv = require("dotenv")
+const { throws } = require("assert")
+dotenv.config()
 
- // valiables de entorno
- const dotenv = require("dotenv");
- const {
-     throws
- } = require("assert");
- dotenv.config();
+const encrypt = (data) => {
+  return bcrypt.hashSync(data, 10)
+}
 
- const encrypt = (data) => {
-     return bcrypt.hashSync(data, 10);
- };
+const compareEncryptedData = (password, hash) => {
+  return bcrypt.compareSync(password, hash)
+}
 
- const compareEncryptedData = (password, hash) => {
-     return bcrypt.compareSync(password, hash);
- };
+const message = (status, mensaje, response) => {
+  const data = {}
+  data.status = status
+  data.data = response
+  data.message = mensaje
 
- const message = (status, mensaje, response) => {
-     const data = {};
-     data.status = status;
-     data.data = response;
-     data.message = mensaje;
+  return data
+}
 
-     return data;
- };
+const CreateToken = (data, time) => {
+  const secret = `${process.env.TOKENSECRET}`
+  //  console.log(`:rocket: ~ file: tools.js ~ line 35 ~ CreateToken ~ secret`, secret)
 
- const CreateToken = (data, time) => {
-     const secret = `${process.env.TOKENSECRET}`;
+  try {
+    if (time !== "" || typeof time !== "undefined") {
+      return jwt.sign(data, secret, {
+        algorithm: "HS256",
+        expiresIn: time,
+      })
+    }
 
-     try {
-         if (time !== '' || typeof time !== 'undefined') {
-             return jwt.sign(data,
+    return jwt.sign({ data }, secret)
+  } catch (err) {
+    throw err
+  }
+}
 
-                 secret, {
-                     algorithm: 'HS256',
-                     expiresIn: time
-                 }
-             );
-         }
+const checkToken = (tokens) => {
+  const secret = `${process.env.TOKENSECRET}`
 
-         return jwt.sign({
-                 data,
-             },
-             secret
-         );
-     } catch (err) {
-         throw err;
-     }
- };
+  try {
+    return jwt.verify(tokens, secret) !== "undefined"
+  } catch (err) {
+    throw err
+  }
+}
 
- const checkToken = (tokens) => {
-     const secret = `${process.env.TOKENSECRET}`;
+const parseDataKnex = (data) => {
+  const info = JSON.parse(JSON.stringify(data))
+  if (info.isArray || typeof info === "object") {
+    return info[0]
+  } else {
+    console.log("*** parseDataKnex ****", typeof info)
+    return false
+  }
+}
 
-     try {
-         return jwt.verify(tokens, secret) !== "undefined";
-     } catch (err) {
-         throw err;
-     }
- };
+export { CreateToken, checkToken, message, encrypt, compareEncryptedData, parseDataKnex }
 
- const parseDataKnex = (data) => {
-
-     const info = JSON.parse(JSON.stringify(data));
-     if (info.isArray || typeof info === 'object') {
-         return info[0]
-     } else {
-         console.log("*** parseDataKnex ****", typeof info);
-         return false
-     };
-
- }
-
- export {
-     CreateToken,
-     checkToken,
-     message,
-     encrypt,
-     compareEncryptedData,
-     parseDataKnex
- };
-
- export {
-     getFiles,
-     getAllFiles,
-     getAllFilesObject,
-     getAllFilesObjectPromise
- }
- from './files';
+export { getFiles, getAllFiles, getAllFilesObject, getAllFilesObjectPromise } from "./files"
