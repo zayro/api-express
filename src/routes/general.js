@@ -26,11 +26,21 @@ const secret = {
 
 api.get("/general/select/:table", generalControlller.getAll)
 
+api.get(
+  "/general/search",
+  check("from").notEmpty(),
+  check("fields").notEmpty(),
+  jwt(secret),
+  guard.check("admin"),
+  generalControlller.search
+)
+
 api.post(
   "/general/search",
   check("from").notEmpty(),
   check("fields").notEmpty(),
-  guard.check(["admin"]),
+  jwt(secret),
+  guard.check("admin"),
   generalControlller.search
 )
 

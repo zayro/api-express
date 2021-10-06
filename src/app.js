@@ -64,31 +64,6 @@ console.log("__dirname", __dirname)
 console.log("process.cwd()", process.cwd())
 app.set("views", path.join(__dirname, "/views"))
 
-app.get("/report", function (req, res) {
-  var mascots = [
-    {
-      name: "Sammy",
-      organization: "DigitalOcean",
-      birth_year: 2012,
-    },
-    {
-      name: "Tux",
-      organization: "Linux",
-      birth_year: 1996,
-    },
-    {
-      name: "Moby Dock",
-      organization: "Docker",
-      birth_year: 2013,
-    },
-  ]
-  var tagline = "No programming concept is complete without a cute animal mascot."
-  res.render("pages/report", {
-    mascots: mascots,
-    tagline: tagline,
-  })
-})
-
 // =================================================================
 // Static Expres  ==================================================
 // =================================================================
@@ -101,7 +76,7 @@ app.use("/public", express.static("public"))
 // Routes Expres  ==================================================
 // =================================================================
 
-import { general, auth, query, files, uploads } from "./routes"
+import { general, auth, query, files, uploads, view, pdf, cache } from "./routes"
 
 var swaggerUi = require("swagger-ui-express"),
   swaggerDocument = require("../doc/swagger.json")
@@ -126,6 +101,9 @@ app.use("/api/v1", auth)
 app.use("/api/v1", query)
 app.use("/api/v1", files)
 app.use("/api/v1", uploads)
+app.use("/api/v1", view)
+app.use("/api/v1", pdf)
+app.use("/api/v1", cache)
 
 /*
 const apiMongo = require('./mongoDB/controller/user')

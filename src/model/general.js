@@ -20,9 +20,9 @@ class conectar {
     return await this.knex.select("*").from(table)
   }
 
-  async search(field, table, condition = {}) {
+  async search(field, table, condition = {}, order = []) {
     //return this.knex('users').where('id_users', id).first();
-    return await this.knex.select(field).from(table).where(condition)
+    return await this.knex.select(field).from(table).where(condition).orderBy(order)
   }
 
   async insert(table, data) {

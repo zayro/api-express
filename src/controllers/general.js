@@ -26,9 +26,10 @@ function search(req, res) {
   const { from, fields } = req.body
 
   const where = req.body.where || {}
+  const order = req.body.order || []
 
   return connect
-    .search(fields, from, where)
+    .search(fields, from, where, order)
     .then((reponse) => {
       if (reponse) {
         return res.status(200).send(message(true, "respuesta exitosa", reponse))

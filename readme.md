@@ -6,17 +6,17 @@ El exámen está generado una api backend escrito en NodeJS y PostgreSql el cual
 
 Se debe tener instalado
 
--   nodejs
--   npm
+- nodejs
+- npm
 
 clonar el repositorio y ejecutar el comando `npm install`
 
 ## Ejecutar aplicacion entorno desarrollo local
 
--   [x] install postgresql y agregar base de datos ubicado en la carpeta db
--   [x] npm start
--   [x] npm run start-dev
--   [x] npm test
+- [x] install postgresql y agregar base de datos ubicado en la carpeta db
+- [x] npm start
+- [x] npm run start-dev
+- [x] npm test
 
 ## Status Codes
 
@@ -34,7 +34,7 @@ devuelve los siguientes códigos de estado en el API:
 
 API devuelven la representación JSON de los recursos creados o editados. Sin embargo, si se envía una solicitud no válida o se produce algún otro error, devuelve una respuesta JSON en el siguiente formato:
 
-```
+```json
 {
   "message" : string,
   "success" : bool,
@@ -53,7 +53,7 @@ El atributo `data` contiene cualquier otro metadato asociado con la respuesta. E
 el aplicativo se testeo con heroku subiendo el proyecto con un deploy en heroku manejando estandares de calidad en el desarrollo.
 
 URL BACK-END
-https://api-imaginamos.herokuapp.com/
+<https://api.herokuapp.com/>
 
 ### Development Local
 
@@ -61,56 +61,56 @@ Ejecutar `npm run start-dev` permite navegar localmente `http://localhost:3000/`
 
 ### Documentacion
 
-Imaginamos Versions by Postman
+ Versions by Postman
 
 URL
 [https://documenter.getpostman.com/view/473681/SzzoZaUs](https://documenter.getpostman.com/view/473681/SzzoZaUs)
 
-#### Puntos a evaluar:
+#### Puntos a evaluar
 
 ● Diseño modelado de datos.
 
 ● API REST con sus endpoints y documentación.
 
--   Documentacion con Swagger
+- Documentacion con Swagger
 
 ● Arquitectura de aplicación en NodeJS (express o
 nest.js)
 
--   Arquitectura con Express
+- Arquitectura con Express
 
 ● Utilización del ORM.
 
--   Orm implementado es knex
+- Orm implementado es knex
 
 ● NO usar ningún boilerplate ni starter.
 ● Patrones de diseño utilizados.
 
--   MODELO - CONTROLADOR
+- MODELO - CONTROLADOR
 
-#### Puntos extras:
+#### Puntos extras
 
 ● Escribir pruebas unitarias y/o de comportamiento.
 
--   Pruebas con supertest y mocha
+- Pruebas con supertest y mocha
 
 ● Virtualización local (docker).
 
--   Docker monolito con dockerFile
+- Docker monolito con dockerFile
 
 ● Virtualización auto deploy (dokku, heroku,
 kubernetes).
 
--   deploy con Heroku
+- deploy con Heroku
 
 ● Documentación con swagger.
 
--   Documentacion incluida
+- Documentacion incluida
 
 ● Utilizar typeScript.
 ● Utilizar Nest.js
 
-# delete cache .env
+### delete cache .env
 
 git rm env --cached
 git rm env.local --cached
@@ -125,3 +125,11 @@ git rm env.local --cached
 ## Config Lint
 
 1. Project con Eslint
+
+### Pre-Install with Windows
+
+Visual Studio Build Tools
+
+- npm install node-pre-gyp -g
+- npm install -g node-gyp
+- npm config set msvs_version 2017

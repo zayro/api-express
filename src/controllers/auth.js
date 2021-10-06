@@ -6,7 +6,6 @@ import general from "../model/general"
 let env = dotenv.config({})
 if (env.error) throw env.error
 env = dotenvParseVariables(env.parsed)
-//console.log(`:rocket: ~ file: auth.js ~ line 8 ~ env`, env)
 
 const connect = new general("auth")
 
@@ -76,12 +75,14 @@ const login = async (req, res) => {
         payload.menu = await menu
         payload.permissions = await privileges
         payload.information = await information
+
         //payload.exp: moment().add(1, "day").unix()
+
+        console.log(`🚀 ~ file: auth.js ~ line 78 ~ .then ~ payload`, payload)
 
         const expiresIn = "1d"
 
         token = CreateToken(payload, expiresIn)
-        console.log(`:rocket: ~ file: auth.js ~ line 111 ~ .then ~ payload`, payload)
 
         let responseToken = {}
         responseToken.status = true
