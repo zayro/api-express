@@ -2,7 +2,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": false,
   "[javascript]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "editor.formatOnSave": true
 },
 "eslint.alwaysShowStatus": true,
@@ -24,5 +24,8 @@
     "html",
     "vue",
     "markdown"
-]
+],
+"files.exclude": {
+    "**/node_modules": true
+}
 }
