@@ -7,6 +7,7 @@ import morgan from 'morgan'
 import path from 'path'
 import methodOverride from 'method-override'
 import helmet from 'helmet'
+import compression from 'compression'
 
 // =================================================================
 // Routes Expres  ==================================================
@@ -46,6 +47,8 @@ app.use(
 
 // override with the X-HTTP-Method-Override header in the request
 app.use(methodOverride('X-HTTP-Method-Override'))
+
+app.use(compression())
 
 // Route Access-Control-Allow-Origin
 app.use((req, res, next) => {

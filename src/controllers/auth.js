@@ -45,12 +45,12 @@ const login = async (req, res) => {
           })
         }
       } catch (error) {
-        console.log(':rocket: ~ file: auth.js ~ line 41 ~ awaitgeneral.raw ~ error', error)
+        console.log(':rocket: ~ file: auth.js ~ line 41 ~ await general.raw ~ error', error)
         return res.status(500).json({
           message: 'Error Auth Crypt failed',
           error: error
         })
-      }
+      } 
 
       if (!resp) {
         return res.status(400).json(message(true, resp, 'no se pudo encontrar registros'))
@@ -60,12 +60,16 @@ const login = async (req, res) => {
           .then((data) => parseDataKnex(data))
 
         const privileges = connect
-          .raw('Select permission, name From view_privileges Where username = ?', [resp.username])
+          .raw('Select permission, role From view_privileges Where username = ?', [resp.username])
           .then((data) => JSON.parse(parseDataKnex(data)[0].permission))
 
         const information = connect
           .raw('Select * From view_information_users Where username = ?', [resp.username])
           .then((data) => parseDataKnex(data))
+
+        const role = connect
+          .raw('Select role From view_privileges Where username = ?', [resp.username])
+          .then((data) => parseDataKnex(data)[0].role)
 
         let token = ''
 
@@ -75,6 +79,7 @@ const login = async (req, res) => {
         payload.menu = await menu
         payload.permissions = await privileges
         payload.information = await information
+        payload.role = await role
 
         // payload.exp: moment().add(1, "day").unix()
 
@@ -89,9 +94,7 @@ const login = async (req, res) => {
         responseToken.username = resp.username
         responseToken.email = resp.email
         responseToken.token = token
-        // responseToken.menu = await menu;
-        // responseToken.privileges = await privileges;
-        // responseToken.information = await information;
+        responseToken.payload = payload
 
         return res.status(200).json(responseToken)
       }

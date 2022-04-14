@@ -1,17 +1,17 @@
-import general from "../model/general"
+import general from '../model/general'
 
-const auth = new general("auth")
+import { parseDataKnex } from '../utils/tools'
 
-import { parseDataKnex } from "../utils/tools"
+const auth = new general('auth')
 
-async function query_users_view() {
-  const sql = "Select * From users"
+async function query_users_view () {
+  const sql = 'Select * From users'
 
   return await auth.raw(sql).then((data) => parseDataKnex(data))
 }
 
-async function query_users() {
-  const sql = "Select * From users"
+async function query_users () {
+  const sql = 'Select * From users'
 
   return await auth.raw(sql)
 }
