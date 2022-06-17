@@ -1,13 +1,13 @@
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
-//requiring path and fs modules
-const path = require("path")
-const fs = require("fs")
+// requiring path and fs modules
+const path = require('path')
+const fs = require('fs')
 
 // valiables de entorno
-const dotenv = require("dotenv")
-const { throws } = require("assert")
+const dotenv = require('dotenv')
+const { throws } = require('assert')
 dotenv.config()
 
 const encrypt = (data) => {
@@ -29,13 +29,13 @@ const message = (status, mensaje, response) => {
 
 const CreateToken = (data, time) => {
   const secret = `${process.env.TOKENSECRET}`
-  console.log(`🚀 ~ file: tools.js ~ line 32 ~ CreateToken ~ secret`, secret)
+  console.log('🚀 ~ file: tools.js ~ line 32 ~ CreateToken ~ secret', secret)
 
   try {
-    if (time !== "" || typeof time !== "undefined") {
+    if (time !== '' || typeof time !== 'undefined') {
       return jwt.sign(data, secret, {
-        algorithm: "HS256",
-        expiresIn: time,
+        algorithm: 'HS256',
+        expiresIn: time
       })
     }
 
@@ -49,7 +49,7 @@ const checkToken = (tokens) => {
   const secret = `${process.env.TOKENSECRET}`
 
   try {
-    return jwt.verify(tokens, secret) !== "undefined"
+    return jwt.verify(tokens, secret) !== 'undefined'
   } catch (err) {
     throw err
   }
@@ -57,14 +57,14 @@ const checkToken = (tokens) => {
 
 const parseDataKnex = (data) => {
   const info = JSON.parse(JSON.stringify(data))
-  if (info.isArray || typeof info === "object") {
+  if (info.isArray || typeof info === 'object') {
     return info[0]
   } else {
-    console.log("*** parseDataKnex ****", typeof info)
+    console.log('*** parseDataKnex ****', typeof info)
     return false
   }
 }
 
 export { CreateToken, checkToken, message, encrypt, compareEncryptedData, parseDataKnex }
 
-export { getFiles, getAllFiles, getAllFilesObject, getAllFilesObjectPromise } from "./files"
+export { getFiles, getAllFiles, getAllFilesObject, getAllFilesObjectPromise } from './files'
