@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
@@ -11,7 +12,8 @@ const { throws } = require('assert')
 dotenv.config()
 
 const encrypt = (data) => {
-  return bcrypt.hashSync(data, 10)
+  const salt = bcrypt.genSaltSync(2)
+  return bcrypt.hashSync(data, salt)
 }
 
 const compareEncryptedData = (password, hash) => {

@@ -133,3 +133,10 @@ Visual Studio Build Tools
 - npm install node-pre-gyp -g
 - npm install -g node-gyp
 - npm config set msvs_version 2017
+
+### SSL
+
+<https://ourcodeworld.co/articulos/leer/261/como-crear-un-servidor-http-con-express-en-nodejs>
+
+- openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout c:/key.pem -out c:/cert.pem
+- openssl req -newkey rsa:2048 -new -nodes -keyout c:/key.pem -out c:/csr.pem

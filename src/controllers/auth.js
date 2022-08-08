@@ -3,13 +3,13 @@ import dotenv from 'dotenv'
 import dotenvParseVariables from 'dotenv-parse-variables'
 import general from '../model/general'
 
+const { compareEncryptedData, message, parseDataKnex, CreateToken, encrypt } = require('../utils/tools')
+
 let env = dotenv.config({})
 if (env.error) throw env.error
 env = dotenvParseVariables(env.parsed)
 
 const connect = new general('auth')
-
-const { compareEncryptedData, message, parseDataKnex, CreateToken } = require('../utils/tools')
 
 const login = async (req, res) => {
   const username = req.body.username
@@ -50,7 +50,7 @@ const login = async (req, res) => {
           message: 'Error Auth Crypt failed',
           error: error
         })
-      } 
+      }
 
       if (!resp) {
         return res.status(400).json(message(true, resp, 'no se pudo encontrar registros'))
@@ -105,4 +105,39 @@ const login = async (req, res) => {
     })
 }
 
-export { login }
+const createUser = async (req, res) => {
+  console.log('creando usuario')
+  const username = req.body.username
+  const password = req.body.password
+  const email = req.body.email
+
+  await connect
+    .raw('INSERT INTO users (id_users, username, password, email) VALUES SELECT MAX(id_users)+1, ? , ? , ?', [username, encrypt(password), email])
+    .then(async (response) => {
+      const resp = parseDataKnex(response)[0]
+
+      // Debug
+      if (env.debug) {
+        console.log(':rocket: ~ file: auth.js ~ line 19 ~ awaitgeneral.raw ~ resp', resp)
+      }
+
+      if (resp.length === 0) {
+        return res.status(401).json({
+          message: 'Email no Valid'
+        })
+      }
+
+      const responseToken = {}
+      responseToken.status = true
+      responseToken.username = resp.username
+      responseToken.email = resp.email
+
+      return res.status(200).json(responseToken)
+    })
+    .catch((err) => {
+      console.log(':rocket: ~ file: auth.js ~ line 66 ~ login ~ err', err)
+      return res.status(500).json(message(false, err, 'Ocurrio un problema al consultar'))
+    })
+}
+
+export { login, createUser }

@@ -1,6 +1,19 @@
 // node myapp.js --color
+import path from 'path'
+import fs from 'fs'
+import http from 'http'
+import https from 'https'
 
 import app from './app.js'
+
+const privateKey = fs.readFileSync(path.join(__dirname, '../ssl/key.pem'), 'utf8')
+const certificate = fs.readFileSync(path.join(__dirname, '../ssl/cert.pem'), 'utf8')
+
+const credentials = { key: privateKey, cert: certificate }
+
+const httpServer = http.createServer(app)
+const httpsServer = https.createServer(credentials, app)
+
 // Include os module and create its object
 // const os = require('os')
 // import config from './config/config.js'
@@ -56,10 +69,13 @@ console.log('OS default directory for temp files : '.yellow, os.tmpdir())
 
 const environment = argv.default({ port: process.env.PORT || 4000 }).argv
 
-app.listen(environment.port, () => {
+httpServer.listen(environment.port, () => {
   console.log(`API REST corriendo en el puerto ${environment.port}`.bold.blue)
   console.log(`http://localhost:${environment.port}/api-docs`.green)
   console.log(`http://localhost:${environment.port}/api/vi`.green)
   console.log(`environment: ${process.env.environment}`.underline.magenta)
   console.log(`debug: ${process.env.debug}`.underline.magenta)
 })
+
+// For https
+httpsServer.listen(8443)
