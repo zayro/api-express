@@ -9,8 +9,6 @@ import methodOverride from 'method-override'
 import helmet from 'helmet'
 import compression from 'compression'
 import fs from 'fs'
-import jsonMorgan from 'morgan-json'
-import morganBody from 'morgan-body'
 
 // =================================================================
 // Routes Expres  ==================================================
@@ -48,27 +46,8 @@ app.use(morgan('dev', {
   skip: function (req, res) { return res.statusCode < 400 }
 }))
 
-const format = jsonMorgan({
-  date: ':date[iso]',
-  addr: ':remote-addr',
-  user: ':remote-user - :user-agent ',
-  url: ':url',
-  method: ':method',
-  status: ':status',
-  short: ':method :url :status :user-agent [:date[web]]',
-  length: ':res[content-length]',
-  'response-time': ':response-time ms'
-})
-
 // create a write stream (in append mode)
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log/access.log'), { flags: 'a' })
-const accessLogStreamJson = fs.createWriteStream(path.join(__dirname, 'log/access.json'), { flags: 'a' })
-const accessLogStreamRequest = fs.createWriteStream(path.join(__dirname, 'log/request.json'), { flags: 'a' })
-
-app.use(morgan(format, { stream: accessLogStreamJson }))
-
-// hook morganBody to express app
-morganBody(app, { noColors: true, stream: accessLogStreamRequest })
 
 // create a write stream (in append mode)
 

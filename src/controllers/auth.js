@@ -1,7 +1,7 @@
 import moment from 'moment'
 import dotenv from 'dotenv'
 import dotenvParseVariables from 'dotenv-parse-variables'
-import general from '../model/general'
+import General from '../model/general'
 
 const { compareEncryptedData, message, parseDataKnex, CreateToken, encrypt } = require('../utils/tools')
 
@@ -9,7 +9,7 @@ let env = dotenv.config({})
 if (env.error) throw env.error
 env = dotenvParseVariables(env.parsed)
 
-const connect = new general('auth')
+const connect = new General('auth')
 
 const login = async (req, res) => {
   const username = req.body.username
