@@ -1,9 +1,9 @@
-const jwt = require('jsonwebtoken')
+// const jwt = require('jsonwebtoken')
 const {
   checkToken
 } = require('../utils/tools')
 
-const checkAuth = (req, res, next) => {
+const checkAuth = (request, res, next) => {
   try {
     /*
         let token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
@@ -23,7 +23,7 @@ const checkAuth = (req, res, next) => {
       const auth = request.headers.authorization
 
       if (auth.split(' ')[0] !== 'Bearer') {
-        throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED)
+        res.status(401).send({ error: 'The unauthorized client is not allowed to access the authorization grant type!' })
       }
 
       token = auth.split(' ')[1]

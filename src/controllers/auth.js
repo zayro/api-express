@@ -9,23 +9,25 @@ let env = dotenv.config({})
 if (env.error) throw env.error
 env = dotenvParseVariables(env.parsed)
 
-const connect = new General('auth')
+const connect = new General('enterprise')
 
 const login = async (req, res) => {
   const username = req.body.username
   const password = req.body.password
 
   await connect
-    .raw('Select * From users Where username = ? or email = ?', [username, password])
+    .raw('Select * From auth.users Where username = ? or email = ?', [username, password])
     .then(async (response) => {
-      const resp = parseDataKnex(response)[0]
+      console.log('🚀 ~ .then ~ response', response.rows)
+      // const resp = parseDataKnex(response)
+      const resp = response.rows[0]
 
       // Debug
       if (env.debug) {
-        console.log(':rocket: ~ file: auth.js ~ line 19 ~ awaitgeneral.raw ~ resp', resp)
+        console.log(':rocket: ~ file: auth.js ~ line 19 ~ awaitgeneral.raw ~ resp', response)
       }
 
-      if (resp.length === 0) {
+      if (response.length === 0) {
         return res.status(401).json({
           message: 'Email no Valid'
         })
@@ -35,7 +37,6 @@ const login = async (req, res) => {
         // Debug
         if (env.debug) {
           console.log(':rocket: ~ file: auth.js ~ line 42 ~ awaitgeneral.raw ~ password', password)
-          console.log(':rocket: ~ file: auth.js ~ line 43 ~ awaitgeneral.raw ~ resp.password', resp.password)
         }
 
         const validPass = compareEncryptedData(password, resp.password)
@@ -56,20 +57,20 @@ const login = async (req, res) => {
         return res.status(400).json(message(true, resp, 'no se pudo encontrar registros'))
       } else {
         const menu = connect
-          .raw('Select menu, link, icon From view_menu Where username = ?', [resp.username])
-          .then((data) => parseDataKnex(data))
+          .raw('Select menu, link, icon From auth.view_menu Where username = ?', [resp.username])
+          .then((data) => (data.rows))
 
         const privileges = connect
-          .raw('Select permission, role From view_privileges Where username = ?', [resp.username])
-          .then((data) => JSON.parse(parseDataKnex(data)[0].permission))
+          .raw('Select permission, role From auth.view_privileges Where username = ?', [resp.username])
+          .then((data) => JSON.parse((data.rows)[0].permission))
 
         const information = connect
-          .raw('Select * From view_information_users Where username = ?', [resp.username])
-          .then((data) => parseDataKnex(data))
+          .raw('Select * From auth.view_information_users Where username = ?', [resp.username])
+          .then((data) => data.rows)
 
         const role = connect
-          .raw('Select role From view_privileges Where username = ?', [resp.username])
-          .then((data) => parseDataKnex(data)[0].role)
+          .raw('Select role From auth.view_privileges Where username = ?', [resp.username])
+          .then((data) => (data.rows)[0].role)
 
         let token = ''
 
@@ -100,7 +101,7 @@ const login = async (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(':rocket: ~ file: auth.js ~ line 66 ~ login ~ err', err)
+      console.log(':rocket: ~ file: auth.js ~ line 103 ~ login ~ err', err)
       return res.status(500).json(message(false, err, 'Ocurrio un problema al consultar'))
     })
 }
@@ -112,7 +113,7 @@ const createUser = async (req, res) => {
   const email = req.body.email
 
   await connect
-    .raw('INSERT INTO users (id_users, username, password, email) VALUES SELECT MAX(id_users)+1, ? , ? , ?', [username, encrypt(password), email])
+    .raw('INSERT INTO auth.users (id_users, username, password, email) VALUES SELECT MAX(id_users)+1, ? , ? , ?', [username, encrypt(password), email])
     .then(async (response) => {
       const resp = parseDataKnex(response)[0]
 

@@ -5,9 +5,14 @@ import { connection } from '../db/index.js'
 
 // const knex = connection("demo")
 
-class conectar {
+class Conectar {
   constructor (db) {
-    this.knex = connection(db)
+    try {
+      this.knex = connection(db)
+      // if (!this.knex.pool) throw new Error('Not connected')
+    } catch (e) {
+      console.log(e) // debug if needed
+    }
   }
 
   async max (table, id) {
@@ -50,4 +55,4 @@ class conectar {
   }
 }
 
-export default conectar
+export default Conectar

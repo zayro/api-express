@@ -27,5 +27,6 @@
 ],
 "files.exclude": {
     "**/node_modules": true
-}
+},
+"DockerRun.DisableDockerrc": true
 }
