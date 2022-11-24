@@ -4,15 +4,19 @@ import { message } from '../utils/tools'
 
 import General from '../model/general'
 
-const connect = new General('demo')
+const connect = new General('enterprise')
 
 function getAll (req, res) {
-  const { table } = req.params
+  try {
+    const { table } = req.params
 
-  connect
-    .select(table)
-    .then((reponse) => res.status(200).json(message(true, 'respuesta exitosa', reponse)))
-    .catch((error) => res.status(500).send(message(false, 'no se encontraron registros getAll', error)))
+    connect
+      .select(table)
+      .then((reponse) => res.status(200).json(message(true, 'respuesta exitosa', reponse)))
+      .catch((error) => res.status(500).send(message(false, 'Error General getAll() ', error)))
+  } catch (error) {
+    console.log('🚀 ~ getAll ~ error', error)
+  }
 }
 
 function search (req, res) {

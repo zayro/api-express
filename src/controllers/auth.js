@@ -62,7 +62,8 @@ const login = async (req, res) => {
 
         const privileges = connect
           .raw('Select permission, role From auth.view_privileges Where username = ?', [resp.username])
-          .then((data) => JSON.parse((data.rows)[0].permission))
+          // .then((data) => JSON.parse((data.rows)[0].permission))
+          .then((data) => (data.rows))
 
         const information = connect
           .raw('Select * From auth.view_information_users Where username = ?', [resp.username])
@@ -70,7 +71,8 @@ const login = async (req, res) => {
 
         const role = connect
           .raw('Select role From auth.view_privileges Where username = ?', [resp.username])
-          .then((data) => (data.rows)[0].role)
+          // .then((data) => (data.rows)[0].role)
+          .then((data) => (data.rows))
 
         let token = ''
 
@@ -113,9 +115,11 @@ const createUser = async (req, res) => {
   const email = req.body.email
 
   await connect
-    .raw('INSERT INTO auth.users (id_users, username, password, email) VALUES SELECT MAX(id_users)+1, ? , ? , ?', [username, encrypt(password), email])
+    .raw('INSERT INTO auth.users (id_users, username, password, email) SELECT MAX(id_users)+1, ?, ?, ? FROM auth.users', [username, encrypt(password), email])
     .then(async (response) => {
-      const resp = parseDataKnex(response)[0]
+      // const resp = parseDataKnex(response)[0]
+      const resp = response
+      console.log('🚀 ~ .then ~ resp', resp)
 
       // Debug
       if (env.debug) {
@@ -133,11 +137,11 @@ const createUser = async (req, res) => {
       responseToken.username = resp.username
       responseToken.email = resp.email
 
-      return res.status(200).json(responseToken)
+      return res.status(200).json(message(true, 'user created successfuly'))
     })
     .catch((err) => {
       console.log(':rocket: ~ file: auth.js ~ line 66 ~ login ~ err', err)
-      return res.status(500).json(message(false, err, 'Ocurrio un problema al consultar'))
+      return res.status(500).json(message(false, err, 'Ocurrio un problema al crear Usuario'))
     })
 }
 

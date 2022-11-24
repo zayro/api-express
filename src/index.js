@@ -6,6 +6,9 @@ import https from 'https'
 
 import app from './app.js'
 
+import { Server } from 'socket.io'
+const { instrument } = require('@socket.io/admin-ui')
+
 const privateKey = fs.readFileSync(path.join(__dirname, '../ssl/key.pem'), 'utf8')
 const certificate = fs.readFileSync(path.join(__dirname, '../ssl/cert.pem'), 'utf8')
 
@@ -79,3 +82,49 @@ httpServer.listen(environment.port, () => {
 
 // For https
 httpsServer.listen(8443)
+
+// For Socket ADMIN UI
+
+const io = new Server(httpServer, {
+  cors: {
+    origin: ['https://admin.socket.io'],
+    credentials: true
+  }
+})
+
+instrument(io, {
+  auth: false
+})
+
+let users = []
+
+io.on('connection', socket => {
+  socket.on('join server', ({ username, room }) => {
+    const user = {
+      username: username,
+      id: socket.id,
+      room: room
+    }
+
+    socket.join(room)
+    users.push(user)
+
+    // const foundIndex = users.findIndex((item) => item.id === socket.id)
+    // send all users
+    if (users.filter(item => item.room === 'about').length > 1) {
+      io.to(socket.id).emit('access', false)
+    }
+
+    io.sockets.emit('users', users)
+    console.log('🚀CONNET ~ socket.on ~ user', user)
+  })
+
+  socket.on('messageRoom', ({ to, content }) => {
+    io.to(to).emit('message', content)
+  })
+
+  socket.on('disconnect', () => {
+    users = users.filter(item => item.id !== socket.id)
+    console.log('🚀 Disconnect ~ socket.on ~ users', users)
+  })
+})

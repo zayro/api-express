@@ -11,7 +11,7 @@ class Conectar {
       this.knex = connection(db)
       // if (!this.knex.pool) throw new Error('Not connected')
     } catch (e) {
-      console.log(e) // debug if needed
+      console.log('Error connection ---------', e) // debug if needed
     }
   }
 
@@ -22,6 +22,9 @@ class Conectar {
 
   async select (table) {
     // return this.knex('sticker');
+    const toStringQuery = this.knex.select('*').from(table).toString()
+    console.log('🚀 ~ Conectar ~ select ~ toStringQuery', toStringQuery)
+
     return await this.knex.select('*').from(table)
   }
 
