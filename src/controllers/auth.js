@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import dotenvParseVariables from 'dotenv-parse-variables'
 import General from '../model/general'
 
-const { compareEncryptedData, message, parseDataKnex, CreateToken, encrypt } = require('../utils/tools')
+const { compareEncryptedData, message, CreateToken, encrypt } = require('../utils/tools')
 
 let env = dotenv.config({})
 if (env.error) throw env.error
@@ -18,13 +18,12 @@ const login = async (req, res) => {
   await connect
     .raw('Select * From auth.users Where username = ? or email = ?', [username, password])
     .then(async (response) => {
-      console.log('🚀 ~ .then ~ response', response.rows)
       // const resp = parseDataKnex(response)
       const resp = response.rows[0]
 
       // Debug
       if (env.debug) {
-        console.log(':rocket: ~ file: auth.js ~ line 19 ~ awaitgeneral.raw ~ resp', response)
+        // console.log('🐛 ~ file: auth.js ~ line 19 ~ awaitgeneral.raw ~ resp', response)
       }
 
       if (response.length === 0) {
@@ -36,7 +35,7 @@ const login = async (req, res) => {
       try {
         // Debug
         if (env.debug) {
-          console.log(':rocket: ~ file: auth.js ~ line 42 ~ awaitgeneral.raw ~ password', password)
+          console.log('🚧 ~ file: auth.js ~ line 42 ~ awaitgeneral.raw ~ password', password)
         }
 
         const validPass = compareEncryptedData(password, resp.password)
@@ -46,7 +45,7 @@ const login = async (req, res) => {
           })
         }
       } catch (error) {
-        console.log(':rocket: ~ file: auth.js ~ line 41 ~ await general.raw ~ error', error)
+        console.log('🚧 ~ file: auth.js ~ line 41 ~ await general.raw ~ error', error)
         return res.status(500).json({
           message: 'Error Auth Crypt failed',
           error: error
@@ -103,7 +102,7 @@ const login = async (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(':rocket: ~ file: auth.js ~ line 103 ~ login ~ err', err)
+      console.log('🚧 ~ file: auth.js ~ line 106 ~ login ~ err', err)
       return res.status(500).json(message(false, err, 'Ocurrio un problema al consultar'))
     })
 }
@@ -123,7 +122,7 @@ const createUser = async (req, res) => {
 
       // Debug
       if (env.debug) {
-        console.log(':rocket: ~ file: auth.js ~ line 19 ~ awaitgeneral.raw ~ resp', resp)
+        console.log('🚧 ~ file: auth.js ~ line 19 ~ awaitgeneral.raw ~ resp', resp)
       }
 
       if (resp.length === 0) {
@@ -140,7 +139,7 @@ const createUser = async (req, res) => {
       return res.status(200).json(message(true, 'user created successfuly'))
     })
     .catch((err) => {
-      console.log(':rocket: ~ file: auth.js ~ line 66 ~ login ~ err', err)
+      console.log('🚧 ~ file: auth.js ~ line 66 ~ login ~ err', err)
       return res.status(500).json(message(false, err, 'Ocurrio un problema al crear Usuario'))
     })
 }

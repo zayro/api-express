@@ -31,7 +31,6 @@ const message = (status, mensaje, response) => {
 
 const CreateToken = (data, time) => {
   const secret = `${process.env.TOKENSECRET}`
-  console.log('🚀 ~ file: tools.js ~ line 32 ~ CreateToken ~ secret', secret)
 
   try {
     if (time !== '' || typeof time !== 'undefined') {

@@ -92,15 +92,23 @@ console.log('process.cwd()', process.cwd())
 app.set('views', path.join(__dirname, '/views'))
 
 // =================================================================
-// Static Expres  ==================================================
+// Document Swagger Express  =======================================
+// =================================================================
+
+/*
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('../doc/swagger.json')
+// RUTA DOCUMENTACION
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+*/
+
+// =================================================================
+// Static Express  ==================================================
 // =================================================================
 
 // Define the static file path
 // app.use(express.static('public'));
 app.use('/public', express.static('public'))
-
-const swaggerUi = require('swagger-ui-express')
-const swaggerDocument = require('../doc/swagger.json')
 
 // RUTA INICIAL
 app.get('/', function (req, res) {
@@ -112,9 +120,6 @@ app.get('/', function (req, res) {
     message: 'Welcome to Api'
   })
 })
-
-// RUTA DOCUMENTACION
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // RUTA API
 app.use('/api/v1', general)

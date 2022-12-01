@@ -16,6 +16,18 @@ dotenv.config()
 const api = express()
 const cache = cacheRedis()
 
+cache.on('connected', function () {
+  console.log('Connected to Redis'.green)
+})
+
+cache.on('disconnected', function () {
+  console.log('disconnected to Redis'.yellow)
+})
+
+cache.on('error', function (error) {
+  throw new Error('Cache conexion error!', error)
+})
+
 api.get(
   '/cache/query/user',
   cache.route({

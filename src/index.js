@@ -1,96 +1,104 @@
-// node myapp.js --color
-import path from 'path'
-import fs from 'fs'
-import http from 'http'
-import https from 'https'
+import { io, httpServer, httpsServer } from './main.js'
 
-import app from './app.js'
+const chalk = require('chalk')
+const figlet = require('figlet')
+const logSymbols = require('log-symbols')
 
-import { Server } from 'socket.io'
-const { instrument } = require('@socket.io/admin-ui')
+const clear = require('clear')
+const boxen = require('boxen')
 
-const privateKey = fs.readFileSync(path.join(__dirname, '../ssl/key.pem'), 'utf8')
-const certificate = fs.readFileSync(path.join(__dirname, '../ssl/cert.pem'), 'utf8')
-
-const credentials = { key: privateKey, cert: certificate }
-
-const httpServer = http.createServer(app)
-const httpsServer = https.createServer(credentials, app)
-
-// Include os module and create its object
-// const os = require('os')
-// import config from './config/config.js'
-
-// require('dotenv').config()
-
-const argv = require('optimist')
+const os = require('node:os')
 
 const colors = require('colors')
+
+const { program, Option } = require('commander')
+
 colors.enable()
 
-if (process.env.environment !== 'production') {
-  require('longjohn')
-}
+// npm install -g .
+// npm uninstall -g main-cli
+// npm ls -g --depth=0
+// gulp-javascript-obfuscator
 
-/*
-// return the endianness of system
-console.log('Endianness of system: '.yellow, os.endianness())
+console.log(
+  chalk.yellow(
+    figlet.textSync('Backend - API', { horizontalLayout: 'full' })
+  )
+)
 
 // It returns hostname of system
 console.log('Hostname: '.yellow, os.hostname())
+console.log(logSymbols.info, 'Compile Info!')
+console.log(logSymbols.info, process.env.domain)
 
-// It returns userInfo of system
-console.log('userInfo: '.yellow, os.userInfo())
+program.version('0.0.1')
 
-// It returns cpus of system
-console.log('cpus: '.yellow, os.cpus())
+program
+  .option('-d, --debug', 'output extra debugging', process.env.debug || false)
+  .option('-i, --info', 'show Info System')
+  .option('-s, --secure', ' allow connected Https')
+  .option('-w, --webSocket', ' allow connected Socket')
+  // .option('-s, --separator <char>')
+  .addOption(new Option('-p, --port <number>', 'port number')
+    .default(process.env.PORT || 4000)
+    .env('PORT'))
 
-// It return operating system name
-console.log('Operating system name: '.yellow, os.type())
+program.parse()
 
-// It returns the platform of os
-console.log('operating system platform: '.yellow, os.platform())
+const options = program.opts()
+if (options.debug) console.log(options)
 
-// It returns the operating systems release.
-console.log('OS release : '.yellow, os.release())
+// ANCHOR - Info
+if (options.info) {
+  clear()
+  console.log(boxen('bY: Marlon Zayro Arias Vargas <zayro8905@gmail.com>', { padding: 1, margin: 1, borderStyle: 'double', borderColor: 'yellow' }))
 
-// return the cpu architecture
-console.log('CPU architecture: '.yellow, os.arch())
+  // return the endianness of system
+  console.log('Endianness of system: '.yellow, os.endianness())
 
-// It returns the amount of free system memory in bytes
-console.log('Free memory: '.yellow, os.freemem())
+  // It returns userInfo of system
+  console.log('userInfo: '.yellow, os.userInfo())
 
-// It return total amount of system memory in bytes
-console.log('Total memory: '.yellow, os.totalmem())
+  // It returns cpus of system
+  console.log('cpus: '.yellow, os.cpus())
 
-// It returns the list of network interfaces
-console.log('List of network Interfaces: '.yellow, os.networkInterfaces())
+  // It return operating system name
+  console.log('Operating system name: '.yellow, os.type())
 
-// It returns the operating systems default directory for temp files.
-console.log('OS default directory for temp files : '.yellow, os.tmpdir())
-*/
+  // It returns the platform of os
+  console.log('operating system platform: '.yellow, os.platform())
 
-const environment = argv.default({ port: process.env.PORT || 4000 }).argv
+  // It returns the operating systems release.
+  console.log('OS release : '.yellow, os.release())
 
-httpServer.listen(environment.port, () => {
-  console.log(`API REST corriendo en el puerto ${environment.port}`.bold.blue)
-  console.log(`http://localhost:${environment.port}/api-docs`.green)
-  console.log(`http://localhost:${environment.port}/api/vi`.green)
+  // return the cpu architecture
+  console.log('CPU architecture: '.yellow, os.arch())
+
+  // It returns the amount of free system memory in bytes
+  console.log('Free memory: '.yellow, os.freemem())
+
+  // It return total amount of system memory in bytes
+  console.log('Total memory: '.yellow, os.totalmem())
+
+  // It returns the list of network interfaces
+  console.log('List of network Interfaces: '.yellow, os.networkInterfaces())
+
+  // It returns the operating systems default directory for temp files.
+  console.log('OS default directory for temp files : '.yellow, os.tmpdir())
+}
+
+// ANCHOR - To Connect Https
+if (options.secure) httpsServer.listen(8443)
+
+httpServer.listen(options.port, () => {
+  console.log(`http://localhost:${options.port}/api-docs`.green)
+  console.log(`http://localhost:${options.port}/api/vi`.green)
   console.log(`environment: ${process.env.environment}`.underline.magenta)
   console.log(`debug: ${process.env.debug}`.underline.magenta)
 })
 
-// For https
-httpsServer.listen(8443)
-
 // For Socket ADMIN UI
-
-const io = new Server(httpServer, {
-  cors: {
-    origin: ['https://admin.socket.io'],
-    credentials: true
-  }
-})
+const { instrument } = require('@socket.io/admin-ui')
 
 instrument(io, {
   auth: false
@@ -127,4 +135,15 @@ io.on('connection', socket => {
     users = users.filter(item => item.id !== socket.id)
     console.log('🚀 Disconnect ~ socket.on ~ users', users)
   })
+})
+
+if (process.env.environment !== 'production') {
+  require('longjohn')
+}
+
+process.on('warning', e => console.warn('*** WARNING ***', e.stack))
+
+process.on('unhandledRejection', err => {
+  console.warn('*** WARNING unhandledRejection ***', err)
+  throw err
 })

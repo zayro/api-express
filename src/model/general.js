@@ -11,7 +11,7 @@ class Conectar {
       this.knex = connection(db)
       // if (!this.knex.pool) throw new Error('Not connected')
     } catch (e) {
-      console.log('Error connection ---------', e) // debug if needed
+      throw new Error('Database conexion error!', e)// debug if needed
     }
   }
 

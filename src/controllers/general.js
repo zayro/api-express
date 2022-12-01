@@ -94,7 +94,7 @@ async function update (req, res) {
   connect
     .update(req.body.update, req.body.where, req.body.set)
     .then((response) => {
-      console.log(':rocket: ~ file: general.js ~ line 91 ~ .then ~ reponse', response)
+      console.log('🚧 ~ file: general.js ~ line 91 ~ .then ~ reponse', response)
       if (response) {
         return res.status(200).send(message(true, 'proceso exitoso', response))
       } else {
