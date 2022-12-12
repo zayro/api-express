@@ -1,5 +1,20 @@
-log/**
+# Ignore folders and files
+**/log/**
 .log*
 *.log
+
+# Folder
+node_modules
 node_modules/
+ssl/
+dist/
 .idea
+.env
+
+# Folder Src
+uploads
+
+#Nyc
+.nyc_output
+coverage/
+

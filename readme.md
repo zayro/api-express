@@ -9,7 +9,7 @@ Se debe tener instalado
 - nodejs
 - npm
 
-clonar el repositorio y ejecutar el comando `npm install`  
+clonar el repositorio y ejecutar el comando `npm install`
 
 ## Ejecutar aplicacion entorno desarrollo local
 
@@ -18,23 +18,23 @@ clonar el repositorio y ejecutar el comando `npm install`
 - [x] npm run start-dev
 - [x] npm test
 
-
 ## Status Codes
+
 devuelve los siguientes códigos de estado en el API:
 
-| Status Code | Description |
-|-------------| ----------- |
-| 200 | `OK` |
-| 201 | `CREATED` |
-| 400 | `BAD REQUEST` |
-| 404 | `NOT FOUND` |
-| 500 | `INTERNAL SERVER ERROR`|
-
+| Status Code | Description             |
+| ----------- | ----------------------- |
+| 200         | `OK`                    |
+| 201         | `CREATED`               |
+| 400         | `BAD REQUEST`           |
+| 404         | `NOT FOUND`             |
+| 500         | `INTERNAL SERVER ERROR` |
 
 ## Responses
+
 API devuelven la representación JSON de los recursos creados o editados. Sin embargo, si se envía una solicitud no válida o se produce algún otro error, devuelve una respuesta JSON en el siguiente formato:
 
-```
+```json
 {
   "message" : string,
   "success" : bool,
@@ -48,59 +48,95 @@ El atributo `status` describe si la transacción fue exitosa o no.
 
 El atributo `data` contiene cualquier otro metadato asociado con la respuesta. Esta será una cadena escapada que contiene datos JSON.
 
-
-
 ### Despligue aplicacion cloud Heroku
 
 el aplicativo se testeo con heroku subiendo el proyecto con un deploy en heroku manejando estandares de calidad en el desarrollo.
 
 URL BACK-END
-https://api-imaginamos.herokuapp.com/
-
+<https://api.herokuapp.com/>
 
 ### Development Local
 
-Ejecutar `npm run start-dev`  permite navegar localmente `http://localhost:3000/`. la aplicacion automaticamente se recarga segun los cambios que se afecten.
+Ejecutar `npm run start-dev` permite navegar localmente `http://localhost:3000/`. la aplicacion automaticamente se recarga segun los cambios que se afecten.
 
 ### Documentacion
 
-Imaginamos Versions by Postman 
+ Versions by Postman
 
 URL
 [https://documenter.getpostman.com/view/473681/SzzoZaUs](https://documenter.getpostman.com/view/473681/SzzoZaUs)
 
+#### Puntos a evaluar
 
-#### Puntos a evaluar:
-● Diseño modelado de datos. 
+● Diseño modelado de datos.
 
 ● API REST con sus endpoints y documentación.
+
 - Documentacion con Swagger
 
 ● Arquitectura de aplicación en NodeJS (express o
 nest.js)
+
 - Arquitectura con Express
 
 ● Utilización del ORM.
+
 - Orm implementado es knex
 
 ● NO usar ningún boilerplate ni starter.
 ● Patrones de diseño utilizados.
+
 - MODELO - CONTROLADOR
 
-#### Puntos extras:
+#### Puntos extras
 
 ● Escribir pruebas unitarias y/o de comportamiento.
+
 - Pruebas con supertest y mocha
 
 ● Virtualización local (docker).
+
 - Docker monolito con dockerFile
 
 ● Virtualización auto deploy (dokku, heroku,
 kubernetes).
+
 - deploy con Heroku
 
 ● Documentación con swagger.
+
 - Documentacion incluida
 
 ● Utilizar typeScript.
 ● Utilizar Nest.js
+
+### delete cache .env
+
+git rm env --cached
+git rm env.local --cached
+
+## Funcionalidad
+
+1. Autenticacion con Token - Express-Jwt
+2. Autorizacion con Token - Express-Permission
+3. Upload Files - Murder
+4. Sql Orm - Knex
+
+## Config Lint
+
+1. Project con Eslint
+
+### Pre-Install with Windows
+
+Visual Studio Build Tools
+
+- npm install node-pre-gyp -g
+- npm install -g node-gyp
+- npm config set msvs_version 2017
+
+### SSL
+
+<https://ourcodeworld.co/articulos/leer/261/como-crear-un-servidor-http-con-express-en-nodejs>
+
+- openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout c:/key.pem -out c:/cert.pem
+- openssl req -newkey rsa:2048 -new -nodes -keyout c:/key.pem -out c:/csr.pem

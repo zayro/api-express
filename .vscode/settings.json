@@ -1,0 +1,32 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": false,
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.formatOnSave": true
+},
+"eslint.alwaysShowStatus": true,
+"eslint.codeAction.showDocumentation": {
+
+    "enable": true
+},
+"eslint.nodePath": "node_modules/eslint-config-airbnb-standard/node_modules/eslint",
+"js/ts.implicitProjectConfig.strictFunctionTypes": false,
+"vsintellicode.typescript.completionsEnabled": false,
+"eslint.format.enable": true,
+"eslint.lintTask.enable": true,
+"eslint.debug": true,
+"eslint.options": {
+},
+"eslint.probe": [
+    "javascript",
+    "javascriptreact",
+    "html",
+    "vue",
+    "markdown"
+],
+"files.exclude": {
+    "**/node_modules": true
+},
+"DockerRun.DisableDockerrc": true
+}
