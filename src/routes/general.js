@@ -26,14 +26,33 @@ const secret = {
 
 api.get('/general/select/:table', generalControlller.getAll)
 
+/**
+ * path: /general/search
+ * @example Get Api Request about Search
+ * @param {string} from it's a table from database
+ * @param {array} fields it's a field from table
+ * @return {object} data result about information
+ */
+
 api.get(
   '/general/search',
+  // Check Field into Body Request
   check('from').notEmpty(),
   check('fields').notEmpty(),
+  // Valid Chec Token
   jwt(secret),
+  // Valid Profile to Permission
   guard.check('admin'),
   generalControlller.search
 )
+
+/**
+ * path: /general/search
+ * @example Post Api Request about Search
+ * @param {string} from it's a table from database
+ * @param {array} fields it's a field from table
+ * @return {object} data result about information
+ */
 
 api.post(
   '/general/search',
@@ -43,6 +62,14 @@ api.post(
   guard.check('admin'),
   generalControlller.search
 )
+
+/**
+ * path: /general/insert
+ * @example Post Api Request about Insert
+ * @param {string} insert it's a table from database
+ * @param {array} values it's a field from table
+ * @return {object} add data result
+ */
 
 api.post(
   '/general/insert',
