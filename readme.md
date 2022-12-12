@@ -1,4 +1,4 @@
-# Guia Examen API - IMAGINAMOS
+# Guia Examen API - Express
 
 El exámen está generado una api backend escrito en NodeJS y PostgreSql el cual expondráuna API REST para la interacción con la aplicación frontend
 
@@ -15,8 +15,10 @@ clonar el repositorio y ejecutar el comando `npm install`
 
 - [x] install postgresql y agregar base de datos ubicado en la carpeta db
 - [x] npm start
-- [x] npm run start-dev
+- [x] npm run start:dev
 - [x] npm test
+- [x] npm lint
+- [x] npm build
 
 ## Status Codes
 
@@ -48,16 +50,10 @@ El atributo `status` describe si la transacción fue exitosa o no.
 
 El atributo `data` contiene cualquier otro metadato asociado con la respuesta. Esta será una cadena escapada que contiene datos JSON.
 
-### Despligue aplicacion cloud Heroku
-
-el aplicativo se testeo con heroku subiendo el proyecto con un deploy en heroku manejando estandares de calidad en el desarrollo.
-
-URL BACK-END
-<https://api.herokuapp.com/>
 
 ### Development Local
 
-Ejecutar `npm run start-dev` permite navegar localmente `http://localhost:3000/`. la aplicacion automaticamente se recarga segun los cambios que se afecten.
+Ejecutar `npm run start:dev` permite navegar localmente `http://localhost:3000/`. la aplicacion automaticamente se recarga segun los cambios que se afecten.
 
 ### Documentacion
 
@@ -65,50 +61,6 @@ Ejecutar `npm run start-dev` permite navegar localmente `http://localhost:3000/`
 
 URL
 [https://documenter.getpostman.com/view/473681/SzzoZaUs](https://documenter.getpostman.com/view/473681/SzzoZaUs)
-
-#### Puntos a evaluar
-
-● Diseño modelado de datos.
-
-● API REST con sus endpoints y documentación.
-
-- Documentacion con Swagger
-
-● Arquitectura de aplicación en NodeJS (express o
-nest.js)
-
-- Arquitectura con Express
-
-● Utilización del ORM.
-
-- Orm implementado es knex
-
-● NO usar ningún boilerplate ni starter.
-● Patrones de diseño utilizados.
-
-- MODELO - CONTROLADOR
-
-#### Puntos extras
-
-● Escribir pruebas unitarias y/o de comportamiento.
-
-- Pruebas con supertest y mocha
-
-● Virtualización local (docker).
-
-- Docker monolito con dockerFile
-
-● Virtualización auto deploy (dokku, heroku,
-kubernetes).
-
-- deploy con Heroku
-
-● Documentación con swagger.
-
-- Documentacion incluida
-
-● Utilizar typeScript.
-● Utilizar Nest.js
 
 ### delete cache .env
 
@@ -134,7 +86,8 @@ Visual Studio Build Tools
 - npm install -g node-gyp
 - npm config set msvs_version 2017
 
-### SSL
+
+### Activar SSÑ
 
 <https://ourcodeworld.co/articulos/leer/261/como-crear-un-servidor-http-con-express-en-nodejs>
 
