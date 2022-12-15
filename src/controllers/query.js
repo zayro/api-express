@@ -1,13 +1,10 @@
 import General from '../model/general'
 
-import { parseDataKnex } from '../utils/tools'
-
-const query = new General('query')
+const query = new General('enterprise')
 
 async function queryUsersView () {
-  const sql = 'Select * From users'
-
-  return await query.raw(sql).then((data) => parseDataKnex(data))
+  const sql = 'select * from demo.prueba'
+  return await query.raw(sql).then((data) => data)
 }
 
 async function queryView () {

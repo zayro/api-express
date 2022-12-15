@@ -30,20 +30,25 @@ const getFiles = (folder, domain = 'localhost') => {
 }
 
 const getAllFiles = function (dirPath, arrayOfFiles) {
-  const files = fs.readdirSync(dirPath)
+  try {
+    const files = fs.readdirSync(dirPath)
 
-  arrayOfFiles = arrayOfFiles || []
+    arrayOfFiles = arrayOfFiles || []
 
-  files.forEach(function (file) {
-    if (fs.statSync(dirPath + '/' + file).isDirectory()) {
-      arrayOfFiles = getAllFiles(dirPath + '/' + file, arrayOfFiles)
-    } else {
+    files.forEach(function (file) {
+      if (fs.statSync(dirPath + '/' + file).isDirectory()) {
+        arrayOfFiles = getAllFiles(dirPath + '/' + file, arrayOfFiles)
+      } else {
       // arrayOfFiles.push(path.join(__dirname, dirPath, "/", file))
-      arrayOfFiles.push(file)
-    }
-  })
+        arrayOfFiles.push(file)
+      }
+    })
 
-  return arrayOfFiles
+    return arrayOfFiles
+  } catch (e) {
+    console.log('🚀 ~ Error ---- getAllFiles ~ e', e)
+    return e
+  }
 }
 
 const getAllFilesObject = (dirPath, arrayData) => {

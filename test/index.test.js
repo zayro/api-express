@@ -15,16 +15,15 @@ after(async () => {
 /**
  * Testing get all user endpoint
  */
-describe('GET  /api/v1/general/select/users', function () {
+describe('GET  /api/v1/general/select/demo.prueba', function () {
   it('respond with json containing a list of all users', async () => {
     await request(app)
-      .get('/api/v1/general/select/users')
+      .get('/api/v1/general/select/demo.prueba')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200)
       .then((response) => {
-        // console.log(`🚧 ~ file: index.test.js ~ line 27 ~ it ~ response`, response.body)
-        assert.equal(response.body.status, true)
+        assert.equal(response.body.status, true) // response request have to be true
       })
   })
 })

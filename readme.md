@@ -11,6 +11,16 @@ Se debe tener instalado
 
 clonar el repositorio y ejecutar el comando `npm install`
 
+## Previo a instalar
+
+### Redis
+
+- instalar redis en su puerto por defecto
+
+## Base de datos con la siguiente estructrura
+
+- abrir el siguiente link: <https://github.com/zayro/api-express/wiki/Document-about-Database>
+
 ## Ejecutar aplicacion entorno desarrollo local
 
 - [x] install postgresql y agregar base de datos ubicado en la carpeta db
@@ -40,7 +50,7 @@ API devuelven la representación JSON de los recursos creados o editados. Sin em
 {
   "message" : string,
   "success" : bool,
-  "data"    : string
+  "data"    : array
 }
 ```
 
@@ -73,6 +83,7 @@ git rm env.local --cached
 2. Autorizacion con Token - Express-Permission
 3. Upload Files - Murder
 4. Sql Orm - Knex
+5. Validar Request - #Express-validator
 
 ## Config Lint
 
@@ -85,11 +96,26 @@ Visual Studio Build Tools
 - npm install node-pre-gyp -g
 - npm install -g node-gyp
 - npm config set msvs_version 2017
+- npm i ioredis --save
+- npm i redis-om --save
 
 
-### Activar SSÑ
+### Activar SSL
 
 <https://ourcodeworld.co/articulos/leer/261/como-crear-un-servidor-http-con-express-en-nodejs>
 
 - openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout c:/key.pem -out c:/cert.pem
 - openssl req -newkey rsa:2048 -new -nodes -keyout c:/key.pem -out c:/csr.pem
+
+
+## lint
+
+### rule Standart-JS
+
+## test
+
+### unit test
+
+### coverage
+
+### e2e

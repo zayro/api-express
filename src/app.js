@@ -81,6 +81,14 @@ app.use((req, res, next) => {
   return true
 })
 
+app.use(function (req, res, next) {
+  req.setTimeout(500000, function () {
+    // call back function is called when request timed out.
+    return res.status(408).json({ message: '408 Request Timeout - HTTP' })
+  })
+  next()
+})
+
 // =================================================================
 // Template Expres  ================================================
 // =================================================================

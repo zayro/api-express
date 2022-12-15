@@ -27,10 +27,10 @@ function getOne (req, res) {
 }
 
 async function save (req, res) {
-  const id_cliente = await general.max('cliente', 'id_cliente')
+  const idCliente = await general.max('cliente', 'id_cliente')
 
   const data = {
-    id_cliente: id_cliente,
+    id_cliente: idCliente,
     nombre: req.body.nombre,
     identificacion: req.body.identificacion
   }

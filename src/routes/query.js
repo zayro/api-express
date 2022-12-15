@@ -11,10 +11,10 @@ dotenv.config()
 const api = express()
 
 api.get('/query/user', async (req, res) => {
-  const data = await queryControlller.query_users_view()
+  const data = await queryControlller.queryUsersView()
 
   if (data) {
-    return res.status(200).send(message(true, 'respuesta exitosa', data))
+    return res.status(200).send(message(true, 'respuesta exitosa', data.rows))
   } else {
     return res.status(200).send(message(false, 'no se encontraron registros'))
   }

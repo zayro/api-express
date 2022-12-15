@@ -14,11 +14,11 @@ const api = express()
 api.use(pdf)
 
 api.get('/pdf/user', async (req, res) => {
-  const data = queryControlller.query_users()
+  const data = queryControlller.queryUsersView()
 
   const html = await ejs
     .renderFile(`${process.cwd()}/src/views/pages/query.ejs`, {
-      info: await data
+      info: await data.rows
     })
     .then((output) => output)
 

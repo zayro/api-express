@@ -2,6 +2,11 @@
 # Ignore built files except build/index.js 
 
 
-mongoDB/*
 build/*
 dist/*
+covarage/*
+test/*
+conf/*
+mariaDB/*
+mongoDB/*
+postgresqlDB/*
