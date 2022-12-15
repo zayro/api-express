@@ -63,14 +63,14 @@ El atributo `data` contiene cualquier otro metadato asociado con la respuesta. E
 
 ### Development Local
 
-Ejecutar `npm run start:dev` permite navegar localmente `http://localhost:3000/`. la aplicacion automaticamente se recarga segun los cambios que se afecten.
+Ejecutar `npm run start:dev` permite navegar localmente `http://domain:port/`. la aplicacion automaticamente se recarga segun los cambios que se afecten.
 
 ### Documentacion
 
  Versions by Postman
 
 URL
-[https://documenter.getpostman.com/view/473681/SzzoZaUs](https://documenter.getpostman.com/view/473681/SzzoZaUs)
+[https://documenter.getpostman.com/view/473681/2s8YzXuKkH](https://documenter.getpostman.com/view/473681/2s8YzXuKkH)
 
 ### delete cache .env
 
