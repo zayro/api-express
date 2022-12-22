@@ -2,6 +2,7 @@ import moment from 'moment'
 import dotenv from 'dotenv'
 import dotenvParseVariables from 'dotenv-parse-variables'
 import General from '../model/general'
+import { log } from '../config/log'
 
 const { compareEncryptedData, message, CreateToken, encrypt } = require('../utils/tools')
 
@@ -12,6 +13,8 @@ env = dotenvParseVariables(env.parsed)
 const connect = new General('enterprise')
 
 const login = async (req, res) => {
+  // Log a simple error message
+
   const username = req.body.username
   const password = req.body.password
 
@@ -59,8 +62,9 @@ const login = async (req, res) => {
           .raw('Select menu, link, icon From auth.view_menu Where username = ?', [resp.username])
           .then((data) => (data.rows))
 
-        const privileges = connect
+        const privileges = await connect
           .raw('Select permission, role From auth.view_privileges Where username = ?', [resp.username])
+
           // .then((data) => JSON.parse((data.rows)[0].permission))
           .then((data) => (data.rows))
 
@@ -68,10 +72,7 @@ const login = async (req, res) => {
           .raw('Select * From auth.view_information_users Where username = ?', [resp.username])
           .then((data) => data.rows)
 
-        const role = connect
-          .raw('Select role From auth.view_privileges Where username = ?', [resp.username])
-          // .then((data) => (data.rows)[0].role)
-          .then((data) => (data.rows))
+        const [{ permission, role }] = privileges
 
         let token = ''
 
@@ -79,9 +80,9 @@ const login = async (req, res) => {
         payload.sub = resp._id
         payload.iat = moment().unix()
         payload.menu = await menu
-        payload.permissions = await privileges
+        payload.permissions = JSON.parse(permission)
         payload.information = await information
-        payload.role = await role
+        payload.role = role
 
         // payload.exp: moment().add(1, "day").unix()
 
@@ -97,6 +98,8 @@ const login = async (req, res) => {
         responseToken.email = resp.email
         responseToken.token = token
         responseToken.payload = payload
+
+        log.Info('/login', 'GET', 'login()', responseToken)
 
         return res.status(200).json(responseToken)
       }
