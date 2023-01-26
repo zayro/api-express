@@ -8,7 +8,8 @@ import path from 'path'
 import methodOverride from 'method-override'
 import helmet from 'helmet'
 import compression from 'compression'
-import fs from 'fs'
+
+import { logger, getStatusText } from './config/log'
 
 // =================================================================
 // Routes Expres  ==================================================
@@ -31,11 +32,19 @@ app.use(
   })
 )
 
+app.response.sendLogResponse = function (statusCode, message, req, res) {
+  const status = getStatusText(res.statusCode)
+  console.log('🚀 ~ status', status)
+  // message.code = status
+  logger(message, req, res)
+  return this.status(statusCode).json(message)
+}
+
 // =================================================================
 // Morgan Expres  ==================================================
 // =================================================================
 
-// app.use(morgan('tiny'))
+app.use(morgan('tiny'))
 
 // must parse body before morganBody as body will be logged
 
@@ -45,13 +54,6 @@ app.use(bodyParser.json())
 app.use(morgan('dev', {
   skip: function (req, res) { return res.statusCode < 400 }
 }))
-
-// create a write stream (in append mode)
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log/access.log'), { flags: 'a' })
-
-// create a write stream (in append mode)
-
-app.use(morgan('combined', { stream: accessLogStream }))
 
 // parse application/json
 app.use(express.json())
@@ -145,10 +147,10 @@ app.use('/api/mongo', apiMongo)
 */
 
 // Route Not Found
-// Handle 404
 app.use(function (req, res) {
   res.status(404).json({
-    response: '404: Page not Found'
+    code: 404,
+    msg: '404 Page not  Found'
   })
 })
 

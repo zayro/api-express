@@ -14,7 +14,7 @@ const api = express()
 // Configuration for Multer
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    console.log('multerFilter', req.params.folder)
+    // console.log('multerFilter', req.params.folder)
     const ruta = typeof req.params.folder !== 'undefined' ? `public/uploads/${req.params.folder}` : 'public/uploads/'
     fs.mkdirSync(ruta, {
       recursive: true
@@ -30,7 +30,8 @@ const multerStorage = multer.diskStorage({
 
 // Multer Filter
 const multerFilter = (req, file, cb) => {
-  if (file.originalname.match(/\.(pdf|doc|docx|jpg)$/)) {
+  console.log('🚀 ~ multerFilter ~ file', file)
+  if (file.originalname.match(/\.(pdf|doc|docx|jpg|png|jpeg|csv)$/)) {
     cb(null, true)
   } else {
     cb(new Error('Error en el tipo de archivo.'), false)
@@ -42,6 +43,7 @@ api.post('/uploadSimple', function (req, res) {
 
   const sampleFile = req.files.archivo
   const filePath = './public/uploads/' + sampleFile.name
+  console.log('🚀 ~ filePath', filePath)
 
   // Use the mv() method to place the file somewhere on your server
   sampleFile.mv(filePath, function (err) {
@@ -71,6 +73,7 @@ api.post('/uploadArray', upload.array('archivo', 2), function (req, res) {
 
 api.post('/uploadSingle/:folder', upload.single('archivo'), function (req, res) {
   console.log('/uploadSingle/:folder', req.params.folder)
+  console.log('🚀 ~ /uploadSingle/:folder', req.files)
 
   res.json({
     message: 'file uploaded',
@@ -92,7 +95,10 @@ const cpUpload = upload.fields([
 ])
 
 api.post('/upload', cpUpload, function (req, res) {
-  console.log(req.files)
+  res.json({
+    message: 'file uploaded',
+    file: req.files
+  })
   res.end()
 })
 

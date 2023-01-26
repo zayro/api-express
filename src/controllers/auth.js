@@ -77,11 +77,13 @@ const login = async (req, res) => {
         let token = ''
 
         const payload = {}
+        const payloadResponse = {}
+
         payload.sub = resp._id
         payload.iat = moment().unix()
-        payload.menu = await menu
+        payloadResponse.menu = await menu
         payload.permissions = JSON.parse(permission)
-        payload.information = await information
+        payloadResponse.information = await information
         payload.role = role
 
         // payload.exp: moment().add(1, "day").unix()
@@ -97,11 +99,11 @@ const login = async (req, res) => {
         responseToken.username = resp.username
         responseToken.email = resp.email
         responseToken.token = token
-        responseToken.payload = payload
+        responseToken.payload = payloadResponse
 
         log.Info('/login', 'GET', 'login()', responseToken)
 
-        return res.status(200).json(responseToken)
+        return res.sendLogResponse(200, responseToken, req, res)
       }
     })
     .catch((err) => {

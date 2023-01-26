@@ -12,7 +12,7 @@ function getAll (req, res) {
 
     connect
       .select(table)
-      .then((reponse) => res.status(200).json(message(true, 'respuesta exitosa', reponse)))
+      .then((reponse) => res.sendLogResponse(200, message(true, 'respuesta exitosa', reponse), req, res))
       .catch((error) => res.status(500).send(message(false, 'Error General getAll() ', error)))
   } catch (error) {
     console.log('🚀 ~ getAll ~ error', error)

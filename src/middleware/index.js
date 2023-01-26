@@ -49,6 +49,21 @@ const checkAuth = (request, res, next) => {
   }
 }
 
+function captureResponse (req, res, next) {
+  res.on('finish', () => {
+    const data = {
+      statusCode: res.statusCode,
+      body: req.body,
+      query: req.query,
+      params: req.params,
+      headersSent: res.headersSent
+    }
+    console.log('🚀 ~ captureResponse ~ data', data)
+  })
+
+  next()
+}
 module.exports = {
-  checkAuth
+  checkAuth,
+  captureResponse
 }
