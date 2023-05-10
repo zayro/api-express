@@ -55,8 +55,8 @@ gulp.task('createFolders', function () {
 
 gulp.task('folder', gulp.series('clean', 'createFolders'))
 
-gulp.task('default', gulp.series('folder', 'babel', 'start'))
+gulp.task('default', gulp.series('folder', 'babel'))
 
-gulp.task('develop', gulp.series('clean', 'babel', 'start'))
+gulp.task('develop', gulp.series('folder', 'babel', 'start'))
 
 gulp.task('production', gulp.series('clean', 'production'))
