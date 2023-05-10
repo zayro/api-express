@@ -81,9 +81,14 @@ const login = async (req, res) => {
 
         payload.sub = resp._id
         payload.iat = moment().unix()
+        /*
         payloadResponse.menu = await menu
+        payloadResponse.permissions = JSON.parse(permission)
+        payload.information = await information
+        */
+        payload.menu = await menu
         payload.permissions = JSON.parse(permission)
-        payloadResponse.information = await information
+        payload.information = await information
         payload.role = role
 
         // payload.exp: moment().add(1, "day").unix()

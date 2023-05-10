@@ -1,12 +1,12 @@
 import express from 'express'
 
-import jwt from 'express-jwt'
-
 import permission from 'express-jwt-permissions'
 
 import * as generalControlller from '../controllers/general'
 
 import { check, body } from 'express-validator'
+
+import { expressjwt } from 'express-jwt'
 
 const dotenv = require('dotenv')
 
@@ -14,7 +14,10 @@ dotenv.config()
 
 const api = express()
 
-const guard = permission()
+const guard = permission({
+  requestProperty: 'auth',
+  permissionsProperty: 'permissions'
+})
 
 const secret = {
   secret: `${process.env.TOKENSECRET}`,
@@ -22,7 +25,7 @@ const secret = {
 }
 
 // security Extreme
-// api.use(jwt(secret))
+// api.use(expressjwt(secret))
 
 api.get('/general/select/:table', generalControlller.getAll)
 
@@ -40,9 +43,9 @@ api.get(
   check('from').notEmpty(),
   check('fields').notEmpty(),
   // Valid Chec Token
-  jwt(secret),
+  expressjwt(secret),
   // Valid Profile to Permission
-  guard.check('admin'),
+  guard.check(['admin']),
   generalControlller.search
 )
 
@@ -58,8 +61,8 @@ api.post(
   '/general/search',
   check('from').notEmpty(),
   check('fields').notEmpty(),
-  jwt(secret),
-  guard.check('admin'),
+  expressjwt(secret),
+  guard.check(['admin']),
   generalControlller.search
 )
 
@@ -74,7 +77,7 @@ api.post(
 api.post(
   '/general/insert',
   [check('insert').exists(), check('values').notEmpty()],
-  jwt(secret),
+  expressjwt(secret),
   guard.check(['admin']),
   generalControlller.save
 )
@@ -82,7 +85,7 @@ api.post(
 api.post(
   '/general/insertIncrement',
   [check('insert').exists(), check('values').notEmpty()],
-  jwt(secret),
+  expressjwt(secret),
   guard.check(['admin']),
   generalControlller.saveAutoIncrement
 )
@@ -101,7 +104,7 @@ api.put(
     // Indicates the success of this synchronous custom validator
     return true
   }),
-  jwt(secret),
+  expressjwt(secret),
   guard.check(['admin']),
   generalControlller.update
 )
@@ -117,8 +120,8 @@ api.delete(
     // Indicates the success of this synchronous custom validator
     return true
   }),
-  jwt(secret),
-  guard.check(['admin']),
+  expressjwt(secret),
+  guard.check('admin'),
   generalControlller.destroy
 )
 

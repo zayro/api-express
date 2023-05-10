@@ -20,6 +20,7 @@ function getAll (req, res) {
 }
 
 function search (req, res) {
+  console.log('req.auth', req.auth)
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     return res.status(403).json({
@@ -58,7 +59,7 @@ async function save (req, res) {
       if (reponse) {
         return res.status(201).send(message(true, 'respuesta exitosa', reponse))
       }
-      return res.status(500).send(message(false, 'no se encontraron registros'))
+      return res.status(400).send(message(false, 'no se encontraron registros'))
     })
     .catch((error) => res.status(500).send(message(false, error)))
 }

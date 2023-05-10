@@ -7,6 +7,8 @@ import multer from 'multer'
 
 import fs from 'fs'
 
+import { message } from '../utils/tools'
+
 dotenv.config()
 
 const api = express()
@@ -47,13 +49,10 @@ api.post('/uploadSimple', function (req, res) {
 
   // Use the mv() method to place the file somewhere on your server
   sampleFile.mv(filePath, function (err) {
-    if (err) return res.status(500).send(err)
+    if (err) return res.status(500).send(message(false, 'ocurrio problema', err))
   })
 
-  res.json({
-    message: 'file uploaded',
-    file: req.files
-  })
+  res.json(message(true, 'respuesta exitosa', req.files))
 })
 
 const upload = multer({
@@ -75,10 +74,7 @@ api.post('/uploadSingle/:folder', upload.single('archivo'), function (req, res) 
   console.log('/uploadSingle/:folder', req.params.folder)
   console.log('🚀 ~ /uploadSingle/:folder', req.files)
 
-  res.json({
-    message: 'file uploaded',
-    file: req.file
-  })
+  res.status(200).send(message(true, 'respuesta exitosa', req.file))
 
   res.end()
 })

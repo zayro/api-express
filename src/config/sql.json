@@ -1,0 +1,4 @@
+{
+    "insert_user": "INSERT INTO auth.users (id_users, username, password, email) SELECT MAX(id_users)+1, ?, ?, ? FROM auth.users"
+
+}

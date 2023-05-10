@@ -9,6 +9,7 @@ import methodOverride from 'method-override'
 import helmet from 'helmet'
 import compression from 'compression'
 
+import expressMetrics from 'express-metrics'
 import { logger, getStatusText } from './config/log'
 
 // =================================================================
@@ -17,9 +18,13 @@ import { logger, getStatusText } from './config/log'
 
 import { general, auth, query, files, uploads, view, pdf, cache } from './routes'
 
+const responseTime = require('response-time')
+
 // const methodOverride = require('method-override');
 
 const app = express()
+
+app.use(responseTime())
 
 // Helmet helps you secure your Express apps by setting various HTTP headers.
 app.use(helmet())
@@ -32,6 +37,9 @@ app.use(
   })
 )
 
+// =================================================================
+// Log Expres  ==================================================
+// =================================================================
 app.response.sendLogResponse = function (statusCode, message, req, res) {
   const status = getStatusText(res.statusCode)
   console.log('🚀 ~ status', status)
@@ -92,6 +100,15 @@ app.use(function (req, res, next) {
 })
 
 // =================================================================
+// Metrics Expres  ================================================
+// =================================================================
+
+// start a metrics server
+app.use(expressMetrics({
+  port: 8091
+}))
+
+// =================================================================
 // Template Expres  ================================================
 // =================================================================
 // set the view engine to ejs
@@ -117,7 +134,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 // =================================================================
 
 // Define the static file path
-// app.use(express.static('public'));
+
 app.use('/public', express.static('public'))
 
 // RUTA INICIAL
