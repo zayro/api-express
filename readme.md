@@ -1,4 +1,4 @@
-# Guia Examen API - Express
+# Guia  API - Express (localmente)
 
 El exámen está generado una api backend escrito en NodeJS y PostgreSql el cual expondráuna API REST para la interacción con la aplicación frontend
 
