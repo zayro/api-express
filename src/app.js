@@ -135,7 +135,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Define the static file path
 
-app.use('/public', express.static('public'))
+// app.use('/public', express.static('public'))
+
+app.use('/public', express.static(path.join(__dirname, './public')))
 
 // RUTA INICIAL
 app.get('/', function (req, res) {
@@ -158,11 +160,6 @@ app.use('/api/v1', view)
 app.use('/api/v1', pdf)
 app.use('/api/v1', cache)
 
-/*
-const apiMongo = require('./mongoDB/controller/user')
-app.use('/api/mongo', apiMongo)
-*/
-
 // Route Not Found
 app.use(function (req, res) {
   res.status(404).json({
@@ -170,18 +167,6 @@ app.use(function (req, res) {
     msg: '404 Page not  Found'
   })
 })
-
-// Handle 500
-/*
-app.use(function (error, req, res, next) {
-
-    res.status(500).json({
-        "500": "Internal Server Error",
-        "error": error
-    });
-
-});
-*/
 
 // Route Handle Errors
 app.use((error, req, res, next) => {

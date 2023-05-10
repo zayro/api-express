@@ -1,4 +1,4 @@
-import { io, httpServer, httpsServer } from './main.js'
+import { io, httpServer } from './main.js'
 
 const chalk = require('chalk')
 const figlet = require('figlet')
@@ -14,11 +14,6 @@ const colors = require('colors')
 const { program, Option } = require('commander')
 
 colors.enable()
-
-// npm install -g .
-// npm uninstall -g main-cli
-// npm ls -g --depth=0
-// gulp-javascript-obfuscator
 
 console.log(
   chalk.yellow(
@@ -36,7 +31,6 @@ program.version('0.0.1')
 program
   .option('-d, --debug', 'output extra debugging', process.env.debug || false)
   .option('-i, --info', 'show Info System')
-  .option('-s, --secure', ' allow connected Https')
   .option('-w, --webSocket', ' allow connected Socket')
   // .option('-s, --separator <char>')
   .addOption(new Option('-p, --port <number>', 'port number')
@@ -86,9 +80,6 @@ if (options.info) {
   // It returns the operating systems default directory for temp files.
   console.log('OS default directory for temp files : '.yellow, os.tmpdir())
 }
-
-// ANCHOR - To Connect Https
-if (options.secure) httpsServer.listen(8443)
 
 httpServer.listen(options.port, () => {
   console.log(`http://localhost:${options.port}/api-docs`.green)

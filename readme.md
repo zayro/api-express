@@ -108,6 +108,10 @@ Visual Studio Build Tools
 - openssl req -newkey rsa:2048 -new -nodes -keyout c:/key.pem -out c:/csr.pem
 
 
+## Gulp 
+
+npm install --global gulp-cli
+
 ## lint
 
 ### rule Standart-JS
@@ -119,3 +123,8 @@ Visual Studio Build Tools
 ### coverage
 
 ### e2e
+
+// npm install -g .
+// npm uninstall -g main-cli
+// npm ls -g --depth=0
+// gulp-javascript-obfuscator

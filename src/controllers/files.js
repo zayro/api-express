@@ -16,7 +16,7 @@ function getFolder (req, res) {
 
 function getFolderAll (req, res) {
   try {
-    const response = getAllFilesObject('public/uploads')
+    const response = getAllFilesObject('./public/uploads')
 
     return res.status(200).json(message(true, 'respuesta exitosa', response))
   } catch (error) {

@@ -1,5 +1,5 @@
 import express from 'express'
-
+import path from 'path'
 // valiables de entorno
 import dotenv from 'dotenv'
 
@@ -17,7 +17,8 @@ const api = express()
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     // console.log('multerFilter', req.params.folder)
-    const ruta = typeof req.params.folder !== 'undefined' ? `public/uploads/${req.params.folder}` : 'public/uploads/'
+
+    const ruta = typeof req.params.folder !== 'undefined' ? path.join(__dirname, `../public/uploads/${req.params.folder}`) : path.join(__dirname, '../public/uploads')
     fs.mkdirSync(ruta, {
       recursive: true
     })
@@ -40,6 +41,23 @@ const multerFilter = (req, file, cb) => {
   }
 }
 
+const upload = multer({
+  // dest: 'src/uploads/',
+  storage: multerStorage,
+  fileFilter: multerFilter
+})
+
+const cpUpload = upload.fields([
+  {
+    name: 'archivo',
+    maxCount: 1
+  },
+  {
+    name: 'gallery',
+    maxCount: 8
+  }
+])
+
 api.post('/uploadSimple', function (req, res) {
   console.log('/uploadSimple', req.files.archivo) // the uploaded file object
 
@@ -53,12 +71,6 @@ api.post('/uploadSimple', function (req, res) {
   })
 
   res.json(message(true, 'respuesta exitosa', req.files))
-})
-
-const upload = multer({
-  // dest: 'src/uploads/',
-  storage: multerStorage,
-  fileFilter: multerFilter
 })
 
 api.post('/uploadArray', upload.array('archivo', 2), function (req, res) {
@@ -78,17 +90,6 @@ api.post('/uploadSingle/:folder', upload.single('archivo'), function (req, res) 
 
   res.end()
 })
-
-const cpUpload = upload.fields([
-  {
-    name: 'archivo',
-    maxCount: 1
-  },
-  {
-    name: 'gallery',
-    maxCount: 8
-  }
-])
 
 api.post('/upload', cpUpload, function (req, res) {
   res.json({

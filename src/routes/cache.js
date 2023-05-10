@@ -11,23 +11,25 @@ import { message } from '../utils/tools'
 
 import { createClient } from 'redis'
 
-const cache = createClient()
+const client = createClient({ url: process.env.REDIS_URL });
 
-cache.on('error', (err) => {
+client.on('error', err => console.log('Redis Client Error', err));
+
+client.on('error', (err) => {
   console.log('error', err)
 })
 
-cache.on('connect', (err) => {
+client.on('connect', (err) => {
   if (err) throw err
   console.log('connect')
 })
 
-cache.on('ready', (err) => {
+client.on('ready', (err) => {
   if (err) throw err
   console.log('ready')
 })
 
-cache.on('end', (err) => {
+client.on('end', (err) => {
   if (err) throw err
   console.log('end')
 })
@@ -35,18 +37,18 @@ cache.on('end', (err) => {
 dotenv.config()
 
 const api = express()
-cache.connect()
+client.connect()
 
 api.get(
-  '/cache/query/user',
+  '/client/query/user',
   async (req, res) => {
     try {
-      const dataCache = await cache.get('/cache/query/user')
+      const dataCache = await client.get('/client/query/user')
       if (dataCache) {
-        return res.status(200).send(message(true, 'respuesta exitosa from cache', JSON.parse(dataCache)))
+        return res.status(200).send(message(true, 'respuesta exitosa from client', JSON.parse(dataCache)))
       } else {
         const data = await queryControlller.queryUsersView()
-        await cache.set('/cache/query/user', JSON.stringify(data.rows), {
+        await client.set('/client/query/user', JSON.stringify(data.rows), {
           EX: 180,
           NX: true
         })
@@ -59,7 +61,7 @@ api.get(
 )
 
 api.get(
-  '/cache/folder',
+  '/client/folder',
 
   fileControlller.getFolder
 )
