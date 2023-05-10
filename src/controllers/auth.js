@@ -1,14 +1,12 @@
 import moment from 'moment'
 import dotenv from 'dotenv'
-import dotenvParseVariables from 'dotenv-parse-variables'
 import General from '../model/general'
 import { log } from '../config/log'
 
 const { compareEncryptedData, message, CreateToken, encrypt } = require('../utils/tools')
 
-let env = dotenv.config({})
-if (env.error) throw env.error
-env = dotenvParseVariables(env.parsed)
+const env = dotenv.config()
+console.log('🚀 ~ env:', env)
 
 const connect = new General('enterprise')
 
@@ -25,7 +23,7 @@ const login = async (req, res) => {
       const resp = response.rows[0]
 
       // Debug
-      if (env.debug) {
+      if (process.env.debug) {
         // console.log('🐛 ~ file: auth.js ~ line 19 ~ awaitgeneral.raw ~ resp', response)
       }
 
@@ -37,7 +35,7 @@ const login = async (req, res) => {
 
       try {
         // Debug
-        if (env.debug) {
+        if (process.env.debug) {
           console.log('🚧 ~ file: auth.js ~ line 42 ~ awaitgeneral.raw ~ password', password)
         }
 
@@ -131,7 +129,7 @@ const createUser = async (req, res) => {
       console.log('🚀 ~ .then ~ resp', resp)
 
       // Debug
-      if (env.debug) {
+      if (process.env.debug) {
         console.log('🚧 ~ file: auth.js ~ line 19 ~ awaitgeneral.raw ~ resp', resp)
       }
 
