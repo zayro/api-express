@@ -8,7 +8,7 @@ const { compareEncryptedData, message, CreateToken, encrypt } = require('../util
 const env = dotenv.config()
 console.log('🚀 ~ env:', env)
 
-const connect = new General('enterprise')
+const connect = new General(process.env.PGDATABASE)
 
 const login = async (req, res) => {
   // Log a simple error message

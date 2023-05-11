@@ -1,6 +1,6 @@
 import General from '../model/general'
 
-const query = new General('enterprise')
+const query = new General(process.env.PGDATABASE)
 
 async function queryUsersView () {
   const sql = 'select * from demo.prueba'

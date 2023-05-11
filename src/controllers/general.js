@@ -4,7 +4,7 @@ import { message } from '../utils/tools'
 
 import General from '../model/general'
 
-const connect = new General('enterprise')
+const connect = new General(process.env.PGDATABASE)
 
 function getAll (req, res) {
   try {
