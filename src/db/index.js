@@ -12,7 +12,7 @@ const connection = (db) => {
 
     connect.log = {
       warn (message) {
-        throw new Error('Database conexion warn!', message)
+        console.warn('Database conexion warn!', message)
       },
       error (message) {
         throw new Error('Database conexion error!', message)
@@ -21,7 +21,7 @@ const connection = (db) => {
         throw new Error('Database conexion deprecate!', message)
       },
       debug (message) {
-        throw new Error('Database conexion debug!', message)
+        console.info('Database conexion debug!', message)
       }
     }
     return knex(connect)
