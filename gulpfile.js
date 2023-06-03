@@ -43,14 +43,14 @@ gulp.task('start', () => {
 })
 
 gulp.task('clean', function () {
-  return gulp.src('dist', { read: false })
+  return gulp.src('./dist', { read: false })
     .pipe(clean())
 })
 
 gulp.task('createFolders', function () {
   return gulp.src('*.*', { read: false })
-    .pipe(gulp.dest('dist/public'))
-    .pipe(gulp.dest('dist/public/uploads'))
+    .pipe(gulp.dest('./dist/public'))
+    .pipe(gulp.dest('./dist/public/uploads'))
 })
 
 gulp.task('folder', gulp.series('clean', 'createFolders'))
