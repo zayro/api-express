@@ -28,7 +28,7 @@
         "test:coverage": "nyc --require @babel/register npm test",
         "coverage:report": "nyc report --reporter=html",
         "coverage": "nyc npm run test",
-        "start": "gulp && node ./dist/index.js",
+        "start": "npx gulp && node ./dist/index.js",
         "start:babel": "babel-node ./src/index.js",
         "start:dev": "env-cmd --verbose -f ./.env nodemon --exec  ./node_modules/.bin/babel-node  ./src/index.js ",
         "start:lab": "env-cmd --verbose -f ./.env.dev nodemon --exec  ./node_modules/.bin/babel-node  ./src/index.js   --config-file ./.babelrc",
