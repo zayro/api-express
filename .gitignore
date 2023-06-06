@@ -1,7 +1,8 @@
-# Ignore folders and files
+# Ignore  files
 **/log/**
 .log*
 *.log
+package-lock.json
 
 # Folder
 node_modules
