@@ -28,5 +28,17 @@
 "files.exclude": {
     "**/node_modules": true
 },
-"DockerRun.DisableDockerrc": true
+"DockerRun.DisableDockerrc": true,
+ 
+"vsicons.associations.folders": [
+    {
+        "icon": "sso",
+        "extensions": ["security"],
+        "name": "security",
+ 
+    },
+],
+"vsicons.presets.foldersAllDefaultIcon": false,
+"vsicons.presets.hideFolders": false,
+ 
 }

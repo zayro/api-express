@@ -16,7 +16,7 @@ import { logger, getStatusText } from './config/log'
 // Routes Expres  ==================================================
 // =================================================================
 
-import { general, auth, query, files, uploads, view, pdf, cache } from './routes'
+import { general, auth, query, files, uploads, view, pdf, cache, socket } from './routes'
 
 const responseTime = require('response-time')
 
@@ -142,11 +142,14 @@ app.use('/public', express.static(path.join(__dirname, './public')))
 // RUTA INICIAL
 app.get('/', function (req, res) {
   const domain = req.headers.host
+  const hostname = req.hostname
 
   res.json({
     documentacion: `http://${domain}/api-docs/`,
     api: `http://${domain}/api/v1/`,
-    message: 'Welcome to Api'
+    socket: `ws://${domain}/`,
+    metrics: `http://${hostname}:8091/metrics`,
+    message: 'Welcome to Business Api'
   })
 })
 
@@ -159,6 +162,7 @@ app.use('/api/v1', uploads)
 app.use('/api/v1', view)
 app.use('/api/v1', pdf)
 app.use('/api/v1', cache)
+app.use('/api/v1', socket)
 
 // Route Not Found
 app.use(function (req, res) {

@@ -128,3 +128,5 @@ npm install --global gulp-cli
 // npm uninstall -g main-cli
 // npm ls -g --depth=0
 // gulp-javascript-obfuscator
+
+git rm --cached .env

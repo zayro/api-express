@@ -1,4 +1,4 @@
-import { io, httpServer } from './main.js'
+import { httpServer } from './main.js'
 
 const chalk = require('chalk')
 const figlet = require('figlet')
@@ -23,7 +23,7 @@ console.log(
 
 // It returns hostname of system
 console.log('Hostname: '.yellow, os.hostname())
-console.log(logSymbols.info, 'Compile Info!')
+console.log(logSymbols.success, 'Compile Info!')
 console.log(logSymbols.info, process.env.domain)
 
 program.version('0.0.1')
@@ -45,7 +45,6 @@ if (options.debug) console.log(options)
 // ANCHOR - Info
 if (options.info) {
   clear()
-  console.log(boxen('bY: Marlon Zayro Arias Vargas <zayro8905@gmail.com>', { padding: 1, margin: 1, borderStyle: 'double', borderColor: 'yellow' }))
 
   // return the endianness of system
   console.log('Endianness of system: '.yellow, os.endianness())
@@ -84,48 +83,13 @@ if (options.info) {
 httpServer.listen(options.port, () => {
   console.log(`http://localhost:${options.port}/api-docs`.green)
   console.log(`http://localhost:${options.port}/api/vi`.green)
+  console.log('http://localhost:8091/metrics/'.green)
+  console.log(`ws://localhost:${options.port}/`.green)
   console.log(`environment: ${process.env.environment}`.underline.magenta)
   console.log(`debug: ${process.env.debug}`.underline.magenta)
-})
-
-// For Socket ADMIN UI
-const { instrument } = require('@socket.io/admin-ui')
-
-instrument(io, {
-  auth: false
-})
-
-let users = []
-
-io.on('connection', socket => {
-  socket.on('join server', ({ username, room }) => {
-    const user = {
-      username: username,
-      id: socket.id,
-      room: room
-    }
-
-    socket.join(room)
-    users.push(user)
-
-    // const foundIndex = users.findIndex((item) => item.id === socket.id)
-    // send all users
-    if (users.filter(item => item.room === 'about').length > 1) {
-      io.to(socket.id).emit('access', false)
-    }
-
-    io.sockets.emit('users', users)
-    console.log('🚀CONNET ~ socket.on ~ user', user)
-  })
-
-  socket.on('messageRoom', ({ to, content }) => {
-    io.to(to).emit('message', content)
-  })
-
-  socket.on('disconnect', () => {
-    users = users.filter(item => item.id !== socket.id)
-    console.log('🚀 Disconnect ~ socket.on ~ users', users)
-  })
+  console.log(logSymbols.warning, 'DATABASE_URL: ', `${process.env.DATABASE_URL}`.red)
+  console.log(logSymbols.warning, 'REDIS_URL: ', `${process.env.REDIS_URL}`.red)
+  console.log(boxen('bY: Marlon Zayro Arias Vargas <zayro8905@gmail.com>', { padding: 1, margin: 1, borderStyle: 'double', borderColor: 'blue' }))
 })
 
 if (process.env.environment !== 'production') {
